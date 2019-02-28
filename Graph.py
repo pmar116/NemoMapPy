@@ -28,15 +28,37 @@ class Graph:
                 list2.append(item[0])
                 if list2 not in self.edgeList:
                     self.edgeList.append(item)
-                if item[0] not in self.vertexList:
-                    self.vertexList.append(item[0])
-                if item[1] not in self.vertexList:
-                    self.vertexList.append(item[1])
+                    '''add vertex to vertex list'''
+                    if item[0] not in self.vertexList:
+                        self.vertexList.append(item[0])
+                    if item[1] not in self.vertexList:
+                        self.vertexList.append(item[1])
 
-        pass
-    def addVerticesAndEdgeRange(self, edgeList):
-        """TO_DO: Implement"""
-        pass
+    def addEdge(self, edge):
+        """
+        addEdge: add a edge and its corresponding vertices to the graph
+        :param edge: the edge to be added
+        :return: true if edge is added. false if edge is not added
+        """
+        if edge not in self.edgeList:
+            '''check if the edge from the other direction is in the list'''
+            list2 = []
+            list2.append(edge[1])
+            list2.append(edge[0])
+            if list2 not in self.edgeList:
+                self.edgeList.append(edge)
+                '''add vertex to vertex list'''
+                if edge[0] not in self.vertexList:
+                    self.vertexList.append(edge[0])
+                if edge[1] not in self.vertexList:
+                    self.vertexList.append(edge[1])
+                return True
+
+        return False
+
+
+
+
     def test(self):
         return self.edgeList
     def test2(self):
