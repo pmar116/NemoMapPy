@@ -9,7 +9,7 @@ class Graph:
 
     Methods
     -------
-    addVerticesAndEdgeRange
+    addEdge: add a edge and its corresponding vertices to the graph
     TO_DO: Add other functions
     """
     def __init__(self, edgeList):
@@ -56,8 +56,20 @@ class Graph:
 
         return False
 
-
-
+    def tryGetEdge(self, edge):
+        """
+        tryGetEdge: check if an edge exist in the graph
+        :param edge: the edge we are trying to find
+        :return:true if edge exist, false otherwise
+        """
+        edgeReverse = []
+        edgeReverse.append(edge[1])
+        edgeReverse.append(edge[0])
+        if edge in self.edgeList:
+            return True
+        if edgeReverse in self.edgeList:
+            return True
+        return False
 
     def test(self):
         return self.edgeList
