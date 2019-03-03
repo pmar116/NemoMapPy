@@ -56,6 +56,53 @@ class Graph:
 
         return False
 
+
+    def getNumberofVertices(self):
+        """
+        "return: the number of vertexs in graph
+        """
+        return len(self.vertexList)
+
+    def getNumberofEdges(self):
+        """
+        :return: the number of edges in graph
+        """
+        return len(self.edgeList)
+    
+    def don_getsize(self,input):
+        """
+        __TODO__ idk if this works or not, but it is to help sort degreeOfNode
+        don_getsize: method to help sort degreeOfNode in method GetNodesSortedByDegree
+            sorts by 
+        """
+        return input[0]
+
+    def GetNodesSortedByDegree(self, degreeCutOff):
+        """
+        GetNodesSortedByDegree: get a list of vertices sorted by their degree sequence 
+        :param degreeCutOff: the threshold of out degree that we want to check
+        :return: list of nodes IDs sorted by out degree in ascending order
+        """
+        vertexCount = self.getNumberofVertices()
+        degreeOfNode = []   # <vertexDegree,vertexID>
+        result = []         # <vertexID>
+
+        #vertex.getFirst - get id of verteces list
+        #vertex.getSecond - get List of verteces 
+        for vertex in self.vertexList:
+            # if(vertex.getSecond.size() >= degreeCutOff):
+            #   vertexList = [vertex.getSecond.size(), vertex.getFirst()] 
+            #   degreeOfNode.append(vertexList)
+            print("this is to remove error")
+        
+        #sort by degree, ascending order
+        degreeOfNode.sort(key=self.don_getsize(degreeOfNode))
+        #get sorted vertexID sorted by degree
+        for vertex in degreeOfNode:
+            #result.append(vertex.getSecond)
+            print("this is to remove error")
+        return result
+
     def tryGetEdge(self, edge):
         """
         tryGetEdge: check if an edge exist in the graph
