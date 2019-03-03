@@ -17,3 +17,15 @@ print(" ")
 list = myGraph.test2()
 for item in list:
     print(item)
+
+"Test tryGetEdge"
+print(" ")
+edge1 = ['1', '2']
+edge2 = ['8', '7']
+edge3 = ['9', '9']
+'''true'''
+print(str(myGraph.tryGetEdge(edge1)))
+'''true'''
+print(str(myGraph.tryGetEdge(edge2)))
+'''false'''
+print(str(myGraph.tryGetEdge(edge3)))
