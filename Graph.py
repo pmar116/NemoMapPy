@@ -19,7 +19,11 @@ class Graph:
         """
         self.edgeList = []
         self.vertexList = []
+
         for item in edgeList:
+            '''used fro adding verticies to vertex list'''
+            found0 = False
+            found1 = False
             '''check if item is in the list'''
             if item not in self.edgeList:
                 '''check if the edge from the other direction is in the list'''
@@ -28,11 +32,36 @@ class Graph:
                 list2.append(item[0])
                 if list2 not in self.edgeList:
                     self.edgeList.append(item)
-                    '''add vertex to vertex list'''
-                    if item[0] not in self.vertexList:
-                        self.vertexList.append(item[0])
-                    if item[1] not in self.vertexList:
-                        self.vertexList.append(item[1])
+
+            '''add vertex to vertex list'''
+            if len(self.vertexList) == 0:
+                temp = []
+                temp.append(item[0])
+                self.vertexList.append(temp)
+                temp2 = []
+                temp2.append(item[1])
+                self.vertexList.append(temp2)
+            for i in range(0, len(self.vertexList)):
+                if item[0] == self.vertexList[i][0]:
+                    found0 = True
+                    if item[1] not in self.vertexList[i]:
+                         self.vertexList[i].append(item[1])
+                if item[1] == self.vertexList[i][0]:
+                    found1 = True
+                    if item[0] not in self.vertexList[i]:
+                        self.vertexList[i].append(item[0])
+            if found0 == False:
+                temp = []
+                temp.append(item[0])
+                temp.append(item[1])
+                self.vertexList.append(temp)
+            if found1 == False:
+                temp = []
+                temp.append(item[1])
+                temp.append(item[0])
+                self.vertexList.append(temp)
+
+
 
     def addEdge(self, edge):
         """

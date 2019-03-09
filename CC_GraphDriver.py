@@ -14,9 +14,11 @@ for item in list:
     print(item)
 
 print(" ")
+"Test making vertex list"
 list = myGraph.test2()
 for item in list:
     print(item)
+
 
 "Test tryGetEdge"
 print(" ")
