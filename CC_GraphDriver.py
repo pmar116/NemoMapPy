@@ -16,8 +16,9 @@ for item in list:
 print(" ")
 "Test making vertex list"
 list = myGraph.test2()
-for item in list:
-    print(item)
+for key, value in list.items():
+    print(key)
+    print(value)
 
 
 "Test tryGetEdge"
@@ -31,3 +32,15 @@ print(str(myGraph.tryGetEdge(edge1)))
 print(str(myGraph.tryGetEdge(edge2)))
 '''false'''
 print(str(myGraph.tryGetEdge(edge3)))
+
+
+"Test getNeighbor"
+print(" ")
+list = myGraph.getNeighbors(1)
+print(list)
+list = myGraph.getNeighbors(7)
+print(list)
+list = myGraph.getNeighbors(9)
+print(list)
+list = myGraph.getNeighbors(10)
+print(list)

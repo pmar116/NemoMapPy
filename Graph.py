@@ -10,15 +10,26 @@ class Graph:
     Methods
     -------
     addEdge: add a edge and its corresponding vertices to the graph
+
+    getNumberofVertices: returns the number of vertices in the graph
+
+    getNumberofEdges: return the number of edges in the graph
+
+    tryEdge: test if sn edge is is the graph
+
+    getNeighbors: get list of neighbors for requested vertex
+
     TO_DO: Add other functions
     """
     def __init__(self, edgeList):
         """
         Constructor: create a graph by updating self.edgeList and self.vertexList
             :param edgeList: Contains list of edges to be used to create a graph
+            :Result: edgeList and vertexList are created and filled to represent
+                    the graph
         """
         self.edgeList = []
-        self.vertexList = []
+        self.vertexList = {}
 
         for item in edgeList:
             '''used fro adding verticies to vertex list'''
@@ -35,31 +46,20 @@ class Graph:
 
             '''add vertex to vertex list'''
             if len(self.vertexList) == 0:
-                temp = []
-                temp.append(item[0])
-                self.vertexList.append(temp)
-                temp2 = []
-                temp2.append(item[1])
-                self.vertexList.append(temp2)
-            for i in range(0, len(self.vertexList)):
-                if item[0] == self.vertexList[i][0]:
-                    found0 = True
-                    if item[1] not in self.vertexList[i]:
-                         self.vertexList[i].append(item[1])
-                if item[1] == self.vertexList[i][0]:
-                    found1 = True
-                    if item[0] not in self.vertexList[i]:
-                        self.vertexList[i].append(item[0])
-            if found0 == False:
-                temp = []
-                temp.append(item[0])
-                temp.append(item[1])
-                self.vertexList.append(temp)
-            if found1 == False:
-                temp = []
-                temp.append(item[1])
-                temp.append(item[0])
-                self.vertexList.append(temp)
+                self.vertexList[int(item[0])] = []
+                self.vertexList[int(item[1])] = []
+            if int(item[0]) in self.vertexList:
+                if item[1] not in self.vertexList[int(item[0])]:
+                    self.vertexList[int(item[0])].append(item[1])
+            else:
+                self.vertexList[int(item[0])] = []
+                self.vertexList[int(item[0])].append(item[1])
+            if int(item[1]) in self.vertexList:
+                if item[0] not in self.vertexList[int(item[1])]:
+                    self.vertexList[int(item[1])].append(item[0])
+            else:
+                self.vertexList[int(item[1])] = []
+                self.vertexList[int(item[1])].append(item[0])
 
 
 
@@ -146,6 +146,16 @@ class Graph:
         if edgeReverse in self.edgeList:
             return True
         return False
+
+    def getNeighbors(self, source):
+        """
+        getNeighbors: return the neighbors of the source
+        :param source: the vertex we are finding the neighbors of
+        :return: list containing the neighbors of source
+        """
+        return self.vertexList.get(int(source), -1)
+
+
 
     def test(self):
         return self.edgeList
