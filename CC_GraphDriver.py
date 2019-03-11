@@ -9,13 +9,13 @@ myGraph = myGP.loadGraph(fileName)
 
 '''Get edge list from graph to test creation of graph class'''
 print(" ")
-list = myGraph.test()
+list = myGraph.testEdgeList()
 for item in list:
     print(item)
 
 print(" ")
 "Test making vertex list"
-list = myGraph.test2()
+list = myGraph.testVertexList()
 for key, value in list.items():
     print(key)
     print(value)
@@ -43,4 +43,17 @@ print(list)
 list = myGraph.getNeighbors(9)
 print(list)
 list = myGraph.getNeighbors(10)
+print(list)
+
+"Test getOutDegree"
+print(" ")
+num = myGraph.getOutDegree(1)
+print(num)
+num = myGraph.getOutDegree(8)
+print(num)
+num = myGraph.getOutDegree(9)
+print(num)
+
+"Test getDegreeSequence"
+list = myGraph.getDegreeSequence()
 print(list)

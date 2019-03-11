@@ -21,7 +21,14 @@ class Graph:
 
     getNodesSortedByDegree: left list of verteces that have at least x amount of connected nodes
 
-    TO_DO: Add other functions
+    getEdgeList: return the 2d edge list
+
+    getVertexList: return the dictionary vertex list
+
+    getDegreeSequence: degree sequence of all vertices in descending order
+
+    getOutDegree: get out degree of a vertex
+
     """
     def __init__(self, edgeList):
         """
@@ -79,10 +86,18 @@ class Graph:
             if list2 not in self.edgeList:
                 self.edgeList.append(edge)
                 '''add vertex to vertex list'''
-                if edge[0] not in self.vertexList:
-                    self.vertexList.append(edge[0])
-                if edge[1] not in self.vertexList:
-                    self.vertexList.append(edge[1])
+                if int(edge[0]) in self.vertexList:
+                    if edge[1] not in self.vertexList[int(edge[0])]:
+                        self.vertexList[int(edge[0])].append(edge[1])
+                else:
+                    self.vertexList[int(edge[0])] = []
+                    self.vertexList[int(edge[0])].append(edge[1])
+                if int(edge[1]) in self.vertexList:
+                    if edge[0] not in self.vertexList[int(edge[1])]:
+                        self.vertexList[int(edge[1])].append(edge[0])
+                else:
+                    self.vertexList[int(edge[1])] = []
+                    self.vertexList[int(edge[1])].append(edge[0])
                 return True
         return False
 
@@ -142,7 +157,35 @@ class Graph:
         """
         return self.vertexList.get(int(source), -1)
 
+    def getDegreeSequence(self):
+        """
+        get degree sequence of all vertices in descending order
+        :return: degree sequence of all vertices in descending order
+        """
+        result = []
+        for key in self.vertexList:
+            result.append(len(self.vertexList[key]))
+        return sorted(result, key = int, reverse=True)
 
+    def getEdgeList(self):
+        """
+        :return: the 2d list of edges
+        """
+        return self.edgeList
+
+    def getVertexList(self):
+        """
+        :return: the dictionary containing the vertex list
+        """
+        return self.vertexList
+
+    def getOutDegree(self, source):
+        """
+        get out degree of a vertex
+        :param source: vertex whose degree you want to find
+        :return: degree of the vertex
+        """
+        return len(self.vertexList[int(source)])
 
     def testEdgeList(self):
         return self.edgeList
@@ -153,3 +196,10 @@ class Graph:
         print("Number of Edges: %d" % self.getNumberofEdges())
     def testGetNodesSortedByDegree(self, num):
         return self.getNodesSortedByDegree(num)
+    def cm_moreGetters(self):
+        list = self.getEdgeList()
+        for item in list:
+            print(item)
+        dict = self.getVertexList()
+        for key in dict:
+            print(key)
