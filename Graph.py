@@ -19,6 +19,8 @@ class Graph:
 
     getNeighbors: get list of neighbors for requested vertex
 
+    getNodesSortedByDegree: left list of verteces that have at least x amount of connected nodes
+
     TO_DO: Add other functions
     """
     def __init__(self, edgeList):
@@ -82,9 +84,7 @@ class Graph:
                 if edge[1] not in self.vertexList:
                     self.vertexList.append(edge[1])
                 return True
-
         return False
-
 
     def getNumberofVertices(self):
         """
@@ -97,39 +97,26 @@ class Graph:
         :return: the number of edges in graph
         """
         return len(self.edgeList)
-    
-    def don_getsize(self,input):
-        """
-        __TODO__ idk if this works or not, but it is to help sort degreeOfNode
-        don_getsize: method to help sort degreeOfNode in method GetNodesSortedByDegree
-            sorts by 
-        """
-        return input[0]
 
-    def GetNodesSortedByDegree(self, degreeCutOff):
+    def getNodesSortedByDegree(self, degreeCutOff):
         """
         GetNodesSortedByDegree: get a list of vertices sorted by their degree sequence 
         :param degreeCutOff: the threshold of out degree that we want to check
         :return: list of nodes IDs sorted by out degree in ascending order
         """
-        vertexCount = self.getNumberofVertices()
         degreeOfNode = []   # <vertexDegree,vertexID>
         result = []         # <vertexID>
-
-        #vertex.getFirst - get id of verteces list
-        #vertex.getSecond - get List of verteces 
+        '''get all verteces that have at least degreeCutOff # nodes'''
         for vertex in self.vertexList:
-            # if(vertex.getSecond.size() >= degreeCutOff):
-            #   vertexList = [vertex.getSecond.size(), vertex.getFirst()] 
-            #   degreeOfNode.append(vertexList)
-            print("this is to remove error")
+            if(len(self.vertexList[vertex]) >= degreeCutOff):
+                list2 = [len(self.vertexList[vertex]), vertex]
+                degreeOfNode.append(list2)
         
-        #sort by degree, ascending order
-        degreeOfNode.sort(key=self.don_getsize(degreeOfNode))
-        #get sorted vertexID sorted by degree
+        '''sort DegreeOfNode in ascending order'''
+        degreeOfNode.sort(key=lambda x: x[0])
+        '''get the vertexID sorted by degree'''
         for vertex in degreeOfNode:
-            #result.append(vertex.getSecond)
-            print("this is to remove error")
+            result.append(vertex[1])
         return result
 
     def tryGetEdge(self, edge):
@@ -157,7 +144,12 @@ class Graph:
 
 
 
-    def test(self):
+    def testEdgeList(self):
         return self.edgeList
-    def test2(self):
+    def testVertexList(self):
         return self.vertexList
+    def testGetters(self):
+        print("Number of Vertices: %d" % self.getNumberofVertices())
+        print("Number of Edges: %d" % self.getNumberofEdges())
+    def testGetNodesSortedByDegree(self, num):
+        return self.getNodesSortedByDegree(num)
