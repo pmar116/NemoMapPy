@@ -123,7 +123,7 @@ class Graph:
         result = []         # <vertexID>
         '''get all verteces that have at least degreeCutOff # nodes'''
         for vertex in self.vertexList:
-            if(len(self.vertexList[vertex]) >= degreeCutOff):
+            if len(self.vertexList[vertex]) >= degreeCutOff:
                 list2 = [len(self.vertexList[vertex]), vertex]
                 degreeOfNode.append(list2)
         
