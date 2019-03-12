@@ -54,7 +54,15 @@ class Utility:
         :param neighborsOfM: the list of neighbors of node m to the query graph
         :return: boolean True if node n can be mapped to node m, otherwise false
         """
-        return True
+        for d in partialMap:
+            neighborsOfd = inputGraph.getNeighbors(d[1])
+            if d[0] in neighborsOfM:
+                if n not in neighborsOfd:
+                    return True
+            else:
+                if n in neighborsOfd:
+                    return True
+        return False
 
     def checkSymmetryBreak(self, fixed, nodesToCheck, partialMap, m, n):
         """
@@ -141,13 +149,13 @@ class Utility:
                 possibleMappingNodes = temp
 
         for n in possibleMappingNodes:
-            if self.isNeighbourIncompatible(inputGraph, n, partialMap, neighborsOfM == False):
+            if not self.isNeighbourIncompatible(inputGraph, n, partialMap, neighborsOfM):
                 skip = False
                 for condition in symBreakCondition:
-                    if self.checkSymmetryBreak(condition[0], condition[1], partialMap, m, n) == False:
+                    if not self.checkSymmetryBreak(condition[0], condition[1], partialMap, m, n):
                         skip = True
                         break
-                if(skip):
+                if skip:
                     continue
                 newPartialMap = partialMap
                 newPartialMap[m] = n
@@ -157,14 +165,21 @@ class Utility:
         return listOfIsomorphisms
 
 
-    def equalDtoH(self, map):
+    def equalDtoH(self, obj1, obj2):
         """
         Helper function to check if the list of keys of obj1 (D) is equal to obj2 (H)
         Equal if all elements of object 1's keys are present in object 2,
         and the elements don't have to be in the same order between objects
-        :param map: map containing obj1 and obj2
+        :param obj1: vectorList of queryGraph
+        :param obj2: list of keys
         :return: boolean isEqual
         """
+        if len(obj1) != len(obj2):
+            return False
+        for key in obj1:
+            if not key in obj2:
+                return False
+        return True
 
     def algorithm2_modified(self, queryGraph, inputGraph, h):
         """
