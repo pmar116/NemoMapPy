@@ -66,8 +66,23 @@ class Utility:
         :param n: ID number of node n of target graph
         :return: True if the symmetry-breaking condition is satisfied and the mapping is okay, False == mapping not okay
         """
+        if m not in nodesToCheck or ((m != fixed) and partialMap.index(fixed)==partialMap[-1]):
+            return True
 
-        return True
+        fixedLabel = 0
+        if m == fixed:
+            fixedLabel = n
+        else:
+            fixedLabel = partialMap[fixed]
+
+        if m == fixed:
+            for node in nodesToCheck:
+                if partialMap.index(node) != partialMap[-1]:
+                    if partialMap[node] < fixedLabel:
+                        return False
+            return True
+        else:
+            return n >= fixedLabel
 
     def isomorphicExtension(self, partialMap, queryGraph, inputGraph, symBreakCondition):
         """
