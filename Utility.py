@@ -181,7 +181,8 @@ class Utility:
                 return False
         return True
 
-    def algorithm2_modified(self, queryGraph, inputGraph, h):
+    @staticmethod
+    def algorithm2_modified(queryGraph, inputGraph, h):
         """
         Method to use NemoMap algorithm (i.e. Algorithm 5 from the NemoMap paper)
             ***Modified from Grochow-Kelis algorithm***
@@ -195,3 +196,4 @@ class Utility:
             (should be the most constrained node of H -> first rank by out-degree; second rank by neighbor degree sequence)
         :return: The count of all of possible mappings of the query graph to the target graph
         """
+        return 1
