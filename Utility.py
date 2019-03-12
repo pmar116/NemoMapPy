@@ -21,7 +21,7 @@ class Utility:
     def binarySearch(self, a, x, lo=0, hi=None):
         hi = hi if hi is not None else len(a)  # hi defaults to len(a)
         pos = bisect_left(a, x, lo, hi)  # find insertion position
-        return (pos if pos != hi and a[pos] == x else -1)
+        return pos if pos != hi and a[pos] == x else -1
 
     def getMostConstrainedNeighbour(self, domain, queryGraph):
         """
@@ -36,7 +36,6 @@ class Utility:
         neighborList = []
         self.chooseNeightboursOfRange(domain, queryGraph, neighborList)
 
-<<<<<<< HEAD
         neighborListSize = len(neighborList)
 
         if neighborListSize == 1:
@@ -100,10 +99,6 @@ class Utility:
         return constraintRank[0][1]
 
 
-
-
-=======
->>>>>>> f43f7ff56ed349352a46050bf60646c5eeedcb04
     def chooseNeightboursOfRange(self, usedRange, inputGraph, neightborList):
         """
         Method to get all neighbors of a set of nodes in a graph (no duplicate neighbors allowed)
@@ -132,9 +127,6 @@ class Utility:
         :param neighborsOfM: the list of neighbors of node m to the query graph
         :return: boolean True if node n can be mapped to node m, otherwise false
         """
-<<<<<<< HEAD
-        pass
-=======
         for d in partialMap:
             neighborsOfd = inputGraph.getNeighbors(d[1])
             if d[0] in neighborsOfM:
@@ -172,7 +164,6 @@ class Utility:
             return True
         else:
             return n >= fixedLabel
->>>>>>> f43f7ff56ed349352a46050bf60646c5eeedcb04
 
     def isomorphicExtension(self, partialMap, queryGraph, inputGraph, symBreakCondition):
         """
