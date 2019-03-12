@@ -4,15 +4,15 @@ class Utility:
 
     Methods
     -------
-    Algorithm2_modified: runs the motif-based search
+    algorithm2_modified: runs the motif-based search
 
-    IsomorphicExtension
+    isomorphicExtension
 
-    EqualDtoH
+    equalDtoH
 
-    GetMostConstrainedNeightbor
+    getMostConstrainedNeightbor
 
-    ClosestNeighborOfRange
+    chooseNeighboursOfRange
     """
 
     def getMostConstrainedNeighbour(self, domain, queryGraph):
@@ -24,14 +24,24 @@ class Utility:
         :return: int corresponding to most constrained node
         """
 
-    def closestNeightborrOfRange(self, usedRange, inputGraph, neightborList):
+    def chooseNeightboursOfRange(self, usedRange, inputGraph, neightborList):
         """
         Method to get all neighbors of a set of nodes in a graph (no duplicate neighbors allowed)
             :param   usedRange: the IDs of the target set of nodes
             :param   inputGraph: the graph to be searched for motif
             :param   neightborList: the reference to the return list of neighbors
-            :return:  none
+            :return:  modified neighborList
+
+            TODO: confirm if this works or not
         """
+        for range in usedRange:
+            local = inputGraph.getNeighbors(range)
+            for loc in local:
+                if(loc in usedRange):
+                    neightborList.append(loc)
+        neightborList.sort()
+        neightborList = list(set(neightborList))
+        return neightborList
 
     def isomorphicExtension(self, partialMap, queryGraph, inputGraph, symBreakCondition):
         """
