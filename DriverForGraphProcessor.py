@@ -24,6 +24,8 @@ if goodInput:
     inputGraph = myGP.loadGraph(inputName)
     queryGraph = myGP.loadGraph(queryName)
 
+    
+    """
     '''TESTING'''
     edge = inputGraph.testEdgeList()
     vertex = inputGraph.testVertexList()
@@ -40,11 +42,14 @@ if goodInput:
     nodesSorted = inputGraph.testGetNodesSortedByDegree(4)
     for item in nodesSorted:
         print(item)
+    """
+
 
     """
     main output
     print stats
     """
+    print("\n\n")
     print("Input Graph: Nodes - %d; Edges - %d" % (inputGraph.getNumberofVertices(), inputGraph.getNumberofEdges()))
     print("Query Graph: Nodes - %d; Edges - %d" % (queryGraph.getNumberofVertices(), queryGraph.getNumberofEdges()))
 
