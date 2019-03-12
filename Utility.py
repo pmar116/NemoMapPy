@@ -13,6 +13,8 @@ class Utility:
     getMostConstrainedNeightbor
 
     chooseNeighboursOfRange
+
+    isNeighborIncompatible
     """
 
     def getMostConstrainedNeighbour(self, domain, queryGraph):
@@ -37,11 +39,58 @@ class Utility:
         for range in usedRange:
             local = inputGraph.getNeighbors(range)
             for loc in local:
-                if(loc in usedRange):
+                if loc in usedRange:
                     neightborList.append(loc)
         neightborList.sort()
         neightborList = list(set(neightborList))
         return neightborList
+
+    def isNeighbourIncompatible(self, inputGraph, n, partialMap, neighborsOfM):
+        """
+        Method to check if a neighbor node n of the target graph could be mapped to a node m of the query graph
+        :param inputGraph: target graph
+        :param n: ID of the node n in the target graph
+        :param partialMap: the current partial mapping from query graph to target graph
+        :param neighborsOfM: the list of neighbors of node m to the query graph
+        :return: boolean True if node n can be mapped to node m, otherwise false
+        """
+        for d in partialMap:
+            neighborsOfd = inputGraph.getNeighbors(d[1])
+            if d[0] in neighborsOfM:
+                if n not in neighborsOfd:
+                    return True
+            else:
+                if n in neighborsOfd:
+                    return True
+        return False
+
+    def checkSymmetryBreak(self, fixed, nodesToCheck, partialMap, m, n):
+        """
+        Method to check if a mapping from node m of query graph to node n of target graph satisfy the symmetry-breaking conditions
+        :param fixed: the representative node from each equivalence class
+        :param nodesToCheck: the symmetry-breaking conditions
+        :param partialMap: the current partial mapping from query graph to target graph
+        :param m: ID number of node m of query graph
+        :param n: ID number of node n of target graph
+        :return: True if the symmetry-breaking condition is satisfied and the mapping is okay, False == mapping not okay
+        """
+        if m not in nodesToCheck or ((m != fixed) and partialMap.index(fixed)==partialMap[-1]):
+            return True
+
+        fixedLabel = 0
+        if m == fixed:
+            fixedLabel = n
+        else:
+            fixedLabel = partialMap[fixed]
+
+        if m == fixed:
+            for node in nodesToCheck:
+                if partialMap.index(node) != partialMap[-1]:
+                    if partialMap[node] < fixedLabel:
+                        return False
+            return True
+        else:
+            return n >= fixedLabel
 
     def isomorphicExtension(self, partialMap, queryGraph, inputGraph, symBreakCondition):
         """
@@ -52,15 +101,85 @@ class Utility:
         :param symBreakCondition: set of symmetry-breaking conditions
         :return: int representing the count of all the isomorphic extensions
         """
+        listOfIsomorphisms = 0;
+        partialMapValvuesG = []
+        partialMapKeysH = []
+        for item in partialMap:
+            partialMapValvuesG = item[1]
+            partialMapKeysH = item[0]
 
-    def equalDtoH(self, map):
+        mapValueOriginal = partialMapValvuesG
+        mapKeyOriginal = partialMapKeysH
+
+        partialMapValvuesG.sort()
+        partialMapKeysH.sort()
+
+        if self.equalDtoH(queryGraph.getVertexList(), partialMapKeysH):
+            return 1
+
+        m = self.getMostConstrainedNeighbour(partialMapKeysH, queryGraph)
+        if m < 0:
+            return 0
+
+        neighborsOfM = queryGraph.getNeighbors(m)
+        bestMappedNeighborOfM = -1
+        for neighbor in neighborsOfM:
+            if partialMap.index(neighbor) != partialMap[-1]:
+                bestMappedNeighborOfM = neighbor
+                break
+
+        possibleMappingNodes = []
+        for node in inputGraph.GetNeighbors(partialMap[bestMappedNeighborOfM]):
+            if node in partialMapValvuesG:
+                possibleMappingNodes.append(node)
+
+        partialMapKeysHSize = len(partialMapKeysH)
+        for i in range(0,partialMapKeysHSize):
+            neighborsOfMappedGNode = (inputGraph.getNeighbors(mapValueOriginal[i]))
+            temp = []
+            if mapKeyOriginal[i] in neighborsOfM:
+                for node in possibleMappingNodes:
+                    if node in neighborsOfMappedGNode:
+                        temp.append(node)
+                possibleMappingNodes = temp
+            else:
+                for node in possibleMappingNodes:
+                    if node in neighborsOfMappedGNode:
+                        temp.append(node)
+                possibleMappingNodes = temp
+
+        for n in possibleMappingNodes:
+            if not self.isNeighbourIncompatible(inputGraph, n, partialMap, neighborsOfM):
+                skip = False
+                for condition in symBreakCondition:
+                    if not self.checkSymmetryBreak(condition[0], condition[1], partialMap, m, n):
+                        skip = True
+                        break
+                if skip:
+                    continue
+                newPartialMap = partialMap
+                newPartialMap[m] = n
+
+                subList = self.isomorphicExtension(newPartialMap, queryGraph, inputGraph, symBreakCondition)
+                listOfIsomorphisms += subList
+        return listOfIsomorphisms
+
+
+    def equalDtoH(self, obj1, obj2):
         """
         Helper function to check if the list of keys of obj1 (D) is equal to obj2 (H)
         Equal if all elements of object 1's keys are present in object 2,
         and the elements don't have to be in the same order between objects
-        :param map: map containing obj1 and obj2
+        :param obj1: vectorList of queryGraph
+        :param obj2: list of keys
         :return: boolean isEqual
         """
+        if len(obj1) != len(obj2):
+            return False
+        for key in obj1:
+            if not key in obj2:
+                return False
+        return True
 
     def algorithm2_modified(self, queryGraph, inputGraph, h):
         """
