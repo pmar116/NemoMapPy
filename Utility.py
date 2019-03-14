@@ -8,6 +8,10 @@ class Utility:
     -------
     algorithm2_modified: runs the motif-based search
 
+    algorithm2_modified_for_equivalence_class:
+
+    findCondition:
+
     isomorphicExtension
 
     equalDtoH
@@ -18,6 +22,10 @@ class Utility:
 
     isNeighborIncompatible
     """
+
+    def __init__(self):
+        pass
+
     def binarySearch(self, a, x, lo=0, hi=None):
         hi = hi if hi is not None else len(a)  # hi defaults to len(a)
         pos = bisect_left(a, x, lo, hi)  # find insertion position
@@ -253,6 +261,30 @@ class Utility:
                 return False
         return True
 
+    def algorithm2_modified_for_equivalance_class(self, queryGraph, fixedNode):
+        """
+        Method to find the symmetry-breaking conditions by Grochow-Kellis. It starts by choosing one node to be the anchor point and create conditions from
+        :param queryGraph: reference to query graph
+        :param fixedNode: the node we choose to be fixed as the anchor for symmetry
+        :return: a set of symmetry-breaking conditions for each represented node from each equivalance class
+        """
+        vertexList = queryGraph.getVertexList()
+        h = vertexList[next(iter(vertexList))][0]
+
+        inputGraphDegSeq = queryGraph.getNodesSortedByDegree(queryGraph.getOutDegree(h))
+        theMappings = []        #2d list
+        f = {}                  #dictionary
+        mappedHNodes = []       #list
+
+        for item in inputGraphDegSeq:
+            f[h] = item
+            mappings = self.isomorphicExtension(f, queryGraph, queryGraph, mappedHNodes)
+            #theMappings
+        condition = {}          #dictionary
+        equivalenceClass = {}   %dict
+
+        return self.findCondition(mappedHNodes, theMappings, condition, equivalenceClass)
+
     def findCondition(self, mappedHNodes, theMappings, condition, equivalenceClass):
         """
         Method to find the symmetry-breaking cinditions by Grochow-Kellis.
@@ -305,8 +337,8 @@ class Utility:
 
         return condition
 
-    @staticmethod
-    def algorithm2_modified(queryGraph, inputGraph, h):
+
+    def algorithm2_modified(self, queryGraph, inputGraph, h):
         """
         Method to use NemoMap algorithm (i.e. Algorithm 5 from the NemoMap paper)
             ***Modified from Grochow-Kelis algorithm***
@@ -320,4 +352,24 @@ class Utility:
             (should be the most constrained node of H -> first rank by out-degree; second rank by neighbor degree sequence)
         :return: The count of all of possible mappings of the query graph to the target graph
         """
-        return 1
+        condition = self.algorithm2_modified_for_equivalance_class(queryGraph, h)
+        print("Size condition: %d" % len(condition))
+
+        for con in condition:
+            print("%d => " % con[0], end='')
+            for value in con[1]:
+                print("%d - " % value, end='')
+            print("")
+        print("")
+
+        inputGraphDegSeq = inputGraph.getNodesSortedByDegree(queryGraph.getOutDegree(h))
+        print("h neighbor size: %d" % queryGraph.getNeighbors(h).size())
+
+        f = []
+        mappingCount = 0
+
+        for value in inputGraphDegSeq:
+            f[h] = value
+            mappingCount += self.isomorphicExtension(f, queryGraph, inputGraph, condition)
+
+        return mappingCount
