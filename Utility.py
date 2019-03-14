@@ -86,7 +86,7 @@ class Utility:
         for i in range(1, count):
             if constraintRank[i][0] < highestDegree:
                 if i == 1:
-                    return  constraintRank[0][1]
+                    return constraintRank[0][1]
                 count = i
                 break
 
@@ -245,7 +245,6 @@ class Utility:
                 listOfIsomorphisms += subList
         return listOfIsomorphisms
 
-
     def equalDtoH(self, obj1, obj2):
         """
         Helper function to check if the list of keys of obj1 (D) is equal to obj2 (H)
@@ -288,13 +287,56 @@ class Utility:
 
     def findCondition(self, mappedHNodes, theMappings, condition, equivalenceClass):
         """
-        Method to find the symmetry-breaking conditions by Grochow-Kellis.
+        Method to find the symmetry-breaking cinditions by Grochow-Kellis.
+        *****NOTE*****: should combine this with Algorithm2_Modified_For_Equivalence_Class()
         :param mappedHNodes:
         :param theMappings:
         :param condition:
         :param equivalenceClass:
         :return:
         """
+        if len(theMappings) == 1:
+            return condition
+
+        equivalenceFilter = {}
+
+        for map in theMappings:
+            for i in range(0, len(map)):
+                equivalenceFilter[int(i)] = [map[i]]
+
+        maxSize = len(equivalenceFilter[0])
+
+        if len(equivalenceClass) == 0:
+            temp = equivalenceFilter[int(0)]
+        else:
+            temp = equivalenceClass[int(0)]
+
+        for entry, value in equivalenceFilter:
+            if len(value) > 1:
+                equivalenceClass[int(entry)].append(value)
+                if len(value) > maxSize:
+                    maxSize= len(value)
+                    temp = value
+
+        equivalenceClass = {key: val for key, val in equivalenceClass.items() if val != temp}
+
+        sortedTemp = sorted(temp)
+
+        fixedNode = sortedTemp[0]
+
+        condition.append([fixedNode, sortedTemp])
+
+        newMappings = []
+
+        for map in theMappings:
+            for i in range(0, len(map)):
+                if map[i] == fixedNode and map[i] == mappedHNodes[i]:
+                    newMappings.append(map)
+
+        self.findCondition(mappedHNodes, newMappings, condition, equivalenceClass)
+
+        return condition
+
 
     def algorithm2_modified(self, queryGraph, inputGraph, h):
         """
