@@ -21,6 +21,7 @@ except IOError:
 if goodInput:
     '''Create Graphs'''
     myGP = GraphProcessor()
+    myUtility = Utility()
     inputGraph = myGP.loadGraph(inputName)
     queryGraph = myGP.loadGraph(queryName)
 
@@ -61,10 +62,11 @@ if goodInput:
     print("\nH node = [ %d ]" % h[-1])
 
     timeStart = time.time()
-    totalMappings = Utility.algorithm2_modified(queryGraph, inputGraph, h[-1])
+    #totalMappings = Utility.algorithm2_modified(queryGraph, inputGraph, h[-1])
+    a = 0
     timeEnd = time.time()
     print("Time taken: %s seconds" % (timeEnd-timeStart))
 
-    print("\nMapping: %d" % totalMappings)
+    #print("\nMapping: %d" % totalMappings)
 else:
     exit()
