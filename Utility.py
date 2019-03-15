@@ -176,18 +176,18 @@ class Utility:
     def isomorphicExtension(self, partialMap, queryGraph, inputGraph, symBreakCondition):
         """
         Method to count all of the isomorphic extensions (no duplicates) of a partial map between the query graph and the target graph
-        :param partialMap: the current partial mapping from query graph to target graph
+        :param partialMap: the current partial mapping from query graph to target graph #is a dictionary
         :param queryGraph: reference to the query graph
         :param inputGraph: reference to the target graph
         :param symBreakCondition: set of symmetry-breaking conditions
         :return: int representing the count of all the isomorphic extensions
         """
-        listOfIsomorphisms = 0;
-        partialMapValvuesG = []
-        partialMapKeysH = []
+        listOfIsomorphisms = 0  # 2d list
+        partialMapValvuesG = []  # list
+        partialMapKeysH = []  # list
         for item in partialMap:
-            partialMapValvuesG = item[1]
-            partialMapKeysH = item[0]
+            partialMapValvuesG = partialMap[item][1]
+            partialMapKeysH = partialMap[item][0]
 
         mapValueOriginal = partialMapValvuesG
         mapKeyOriginal = partialMapKeysH
@@ -205,7 +205,8 @@ class Utility:
         neighborsOfM = queryGraph.getNeighbors(m)
         bestMappedNeighborOfM = -1
         for neighbor in neighborsOfM:
-            if partialMap.index(neighbor) != partialMap[-1]:
+            # this might not work with dictionaries since they don't care about order
+            if partialMap[neighbor] != partialMap[-1]:
                 bestMappedNeighborOfM = neighbor
                 break
 
@@ -280,8 +281,11 @@ class Utility:
             f[h] = item
             mappings = self.isomorphicExtension(f, queryGraph, queryGraph, mappedHNodes)
             #theMappings
+            for maps in mappings:
+                theMappings.append(maps)
+
         condition = {}          #dictionary
-        equivalenceClass = {}   %dict
+        equivalenceClass = {}   #dict
 
         return self.findCondition(mappedHNodes, theMappings, condition, equivalenceClass)
 
@@ -289,10 +293,10 @@ class Utility:
         """
         Method to find the symmetry-breaking cinditions by Grochow-Kellis.
         *****NOTE*****: should combine this with Algorithm2_Modified_For_Equivalence_Class()
-        :param mappedHNodes:
-        :param theMappings:
-        :param condition:
-        :param equivalenceClass:
+        :param mappedHNodes: List
+        :param theMappings: 2D list
+        :param condition: Dictionary
+        :param equivalenceClass: Dictionary
         :return:
         """
         if len(theMappings) == 1:
@@ -300,9 +304,9 @@ class Utility:
 
         equivalenceFilter = {}
 
-        for map in theMappings:
-            for i in range(0, len(map)):
-                equivalenceFilter[int(i)] = [map[i]]
+        for maps in theMappings:
+            for i in range(0, len(maps)):
+                equivalenceFilter[int(i)] = [maps[i]]
 
         maxSize = len(equivalenceFilter[0])
 
@@ -318,20 +322,20 @@ class Utility:
                     maxSize= len(value)
                     temp = value
 
-        equivalenceClass = {key: val for key, val in equivalenceClass.items() if val != temp}
+        equivalenceClass = {key: val for key, val in equivalenceClass.items() if val not in temp}
 
         sortedTemp = sorted(temp)
 
         fixedNode = sortedTemp[0]
 
-        condition.append([fixedNode, sortedTemp])
+        condition[fixedNode].append([sortedTemp])
 
         newMappings = []
 
-        for map in theMappings:
-            for i in range(0, len(map)):
-                if map[i] == fixedNode and map[i] == mappedHNodes[i]:
-                    newMappings.append(map)
+        for maps in theMappings:
+            for i in range(0, len(maps)):
+                if maps[i] == fixedNode and maps[i] == mappedHNodes[i]:
+                    newMappings.append(maps)
 
         self.findCondition(mappedHNodes, newMappings, condition, equivalenceClass)
 
