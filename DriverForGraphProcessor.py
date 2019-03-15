@@ -21,29 +21,9 @@ except IOError:
 if goodInput:
     '''Create Graphs'''
     myGP = GraphProcessor()
-    myUtility = Utility()
     inputGraph = myGP.loadGraph(inputName)
     queryGraph = myGP.loadGraph(queryName)
-
-    
-    """
-    '''TESTING'''
-    edge = inputGraph.testEdgeList()
-    vertex = inputGraph.testVertexList()
-    print("\nEdge List")
-    for item in edge:
-        print(item)
-    print("\nVertex List")
-    for key in vertex:
-        print(key)
-        print(vertex[key])
-    print("\n")
-    inputGraph.testGetters()
-    print("\nGet Nodes Sorted By Degree")
-    nodesSorted = inputGraph.testGetNodesSortedByDegree(4)
-    for item in nodesSorted:
-        print(item)
-    """
+    myUtility = Utility()
 
 
     """
@@ -59,14 +39,15 @@ if goodInput:
         print(item)
 
     h = queryGraph.getNodesSortedByDegree(0)
-    print("\nH node = [ %d ]" % h[-1])
+    h1 = h[-1]
+    print("\nH node = [ %d ]" % h1)
 
     timeStart = time.time()
-    #totalMappings = Utility.algorithm2_modified(queryGraph, inputGraph, h[-1])
+    totalMappings = myUtility.algorithm2_modified(queryGraph, inputGraph, h1)
     a = 0
     timeEnd = time.time()
     print("Time taken: %s seconds" % (timeEnd-timeStart))
 
-    #print("\nMapping: %d" % totalMappings)
+    print("\nMapping: %d" % totalMappings)
 else:
     exit()

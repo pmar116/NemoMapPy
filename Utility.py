@@ -173,6 +173,75 @@ class Utility:
         else:
             return n >= fixedLabel
 
+    def equalDtoH(self, obj1, obj2):
+        """
+        Helper function to check if the list of keys of obj1 (D) is equal to obj2 (H)
+        Equal if all elements of object 1's keys are present in object 2,
+        and the elements don't have to be in the same order between objects
+        :param obj1: vectorList of queryGraph
+        :param obj2: list of keys
+        :return: boolean isEqual
+        """
+        if len(obj1) != len(obj2):
+            return False
+        for key in obj1:
+            if not key in obj2:
+                return False
+        return True
+    
+    
+    def findCondition(self, mappedHNodes, theMappings, condition, equivalenceClass):
+        """
+        Method to find the symmetry-breaking cinditions by Grochow-Kellis.
+        *****NOTE*****: should combine this with Algorithm2_Modified_For_Equivalence_Class()
+        :param mappedHNodes: List
+        :param theMappings: 2D list
+        :param condition: Dictionary
+        :param equivalenceClass: Dictionary
+        :return:
+        """
+        if len(theMappings) == 1:
+            return condition
+
+        equivalenceFilter = {}
+
+        for maps in theMappings:
+            for i in range(0, len(maps)):
+                equivalenceFilter[int(i)] = [maps[i]]
+
+        maxSize = len(equivalenceFilter[0])
+
+        if len(equivalenceClass) == 0:
+            temp = equivalenceFilter[int(0)]
+        else:
+            temp = equivalenceClass[int(0)]
+
+        for entry, value in equivalenceFilter:
+            if len(value) > 1:
+                equivalenceClass[int(entry)].append(value)
+                if len(value) > maxSize:
+                    maxSize= len(value)
+                    temp = value
+
+        equivalenceClass = {key: val for key, val in equivalenceClass.items() if val not in temp}
+
+        sortedTemp = sorted(temp)
+
+        fixedNode = sortedTemp[0]
+
+        condition[fixedNode].append([sortedTemp])
+
+        newMappings = []
+
+        for maps in theMappings:
+            for i in range(0, len(maps)):
+                if maps[i] == fixedNode and maps[i] == mappedHNodes[i]:
+                    newMappings.append(maps)
+
+        self.findCondition(mappedHNodes, newMappings, condition, equivalenceClass)
+
+        return condition
+
     def isomorphicExtension(self, partialMap, queryGraph, inputGraph, symBreakCondition):
         """
         Method to count all of the isomorphic extensions (no duplicates) of a partial map between the query graph and the target graph
@@ -182,12 +251,12 @@ class Utility:
         :param symBreakCondition: set of symmetry-breaking conditions
         :return: int representing the count of all the isomorphic extensions
         """
-        listOfIsomorphisms = 0  # 2d list
+        listOfIsomorphisms = []  # 2d list
         partialMapValvuesG = []  # list
         partialMapKeysH = []  # list
         for item in partialMap:
-            partialMapValvuesG = partialMap[item][1]
-            partialMapKeysH = partialMap[item][0]
+            partialMapValvuesG.append(partialMap[item])
+            partialMapKeysH.append(item)
 
         mapValueOriginal = partialMapValvuesG
         mapKeyOriginal = partialMapKeysH
@@ -243,24 +312,57 @@ class Utility:
                 newPartialMap[m] = n
 
                 subList = self.isomorphicExtension(newPartialMap, queryGraph, inputGraph, symBreakCondition)
-                listOfIsomorphisms += subList
+                for item in subList:
+                    listOfIsomorphisms.append(item)
         return listOfIsomorphisms
 
-    def equalDtoH(self, obj1, obj2):
+    def isomorphicExtensionForEquivalenceClass(self, partialMap, queryGraph, inputGraph, mappedHNodes):
         """
-        Helper function to check if the list of keys of obj1 (D) is equal to obj2 (H)
-        Equal if all elements of object 1's keys are present in object 2,
-        and the elements don't have to be in the same order between objects
-        :param obj1: vectorList of queryGraph
-        :param obj2: list of keys
-        :return: boolean isEqual
+        Helper method to find all of the isomorphic extensions of a partial map between the query graph and itself
+        :param partialMap: dictionary
+        :param queryGraph: Graph
+        :param inputGraph: Graph - same as query graph
+        :param mappedHNodes: List
+        :return:
         """
-        if len(obj1) != len(obj2):
-            return False
-        for key in obj1:
-            if not key in obj2:
-                return False
-        return True
+        result = []                 #2d list
+        listOfIsomorphisms = []     #2d list
+        partialMapValuesG = []      #list
+        partialMapKeysH = []        #list
+
+        '''extract list of keys and list of values from partialMap'''
+        for map in partialMap:
+            partialMapValuesG.append(partialMap[map])
+            partialMapKeysH.append(map)
+
+        mapValueOriginal = partialMapValuesG
+        mapKeyOriginal = partialMapKeysH
+        partialMapValuesG.sort()
+        partialMapKeysH.sort()
+
+        if self.equalDtoH(queryGraph.getVertexList(), partialMapKeysH) == True:
+            mappedHNodes = mapKeyOriginal
+            result.append(mapValueOriginal)
+            return result
+        
+        m = self.getMostConstrainedNeighbour(partialMapKeysH, queryGraph)
+        if m < 0:
+            return listOfIsomorphisms
+        
+        neighbourRange = []     #list
+        neighbourRange = self.chooseNeightboursOfRange(partialMapValuesG, inputGraph, neighbourRange)
+
+        neighborsOfM = queryGraph.getNeighbors(m)
+        for n in neighbourRange:
+            if not self.isNeighbourIncompatible(inputGraph, n, partialMap, neighborsOfM):
+                newPartialMap = partialMap  #dict of pairs
+                partialMap[m] = n
+
+                '''vector <vector <int> >'''
+                subList = self.isomorphicExtensionForEquivalenceClass(newPartialMap, queryGraph, inputGraph, mappedHNodes)
+                for item in subList:
+                    listOfIsomorphisms.append(item)
+        return listOfIsomorphisms
 
     def algorithm2_modified_for_equivalance_class(self, queryGraph, fixedNode):
         """
@@ -279,7 +381,7 @@ class Utility:
 
         for item in inputGraphDegSeq:
             f[h] = item
-            mappings = self.isomorphicExtension(f, queryGraph, queryGraph, mappedHNodes)
+            mappings = self.isomorphicExtensionForEquivalenceClass(f, queryGraph, queryGraph, mappedHNodes)
             #theMappings
             for maps in mappings:
                 theMappings.append(maps)
@@ -288,59 +390,6 @@ class Utility:
         equivalenceClass = {}   #dict
 
         return self.findCondition(mappedHNodes, theMappings, condition, equivalenceClass)
-
-    def findCondition(self, mappedHNodes, theMappings, condition, equivalenceClass):
-        """
-        Method to find the symmetry-breaking cinditions by Grochow-Kellis.
-        *****NOTE*****: should combine this with Algorithm2_Modified_For_Equivalence_Class()
-        :param mappedHNodes: List
-        :param theMappings: 2D list
-        :param condition: Dictionary
-        :param equivalenceClass: Dictionary
-        :return:
-        """
-        if len(theMappings) == 1:
-            return condition
-
-        equivalenceFilter = {}
-
-        for maps in theMappings:
-            for i in range(0, len(maps)):
-                equivalenceFilter[int(i)] = [maps[i]]
-
-        maxSize = len(equivalenceFilter[0])
-
-        if len(equivalenceClass) == 0:
-            temp = equivalenceFilter[int(0)]
-        else:
-            temp = equivalenceClass[int(0)]
-
-        for entry, value in equivalenceFilter:
-            if len(value) > 1:
-                equivalenceClass[int(entry)].append(value)
-                if len(value) > maxSize:
-                    maxSize= len(value)
-                    temp = value
-
-        equivalenceClass = {key: val for key, val in equivalenceClass.items() if val not in temp}
-
-        sortedTemp = sorted(temp)
-
-        fixedNode = sortedTemp[0]
-
-        condition[fixedNode].append([sortedTemp])
-
-        newMappings = []
-
-        for maps in theMappings:
-            for i in range(0, len(maps)):
-                if maps[i] == fixedNode and maps[i] == mappedHNodes[i]:
-                    newMappings.append(maps)
-
-        self.findCondition(mappedHNodes, newMappings, condition, equivalenceClass)
-
-        return condition
-
 
     def algorithm2_modified(self, queryGraph, inputGraph, h):
         """
