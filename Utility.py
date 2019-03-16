@@ -351,8 +351,7 @@ class Utility:
         partialMapKeysH.sort()
 
         if self.equalDtoH(queryGraph.getVertexList(), partialMapKeysH) == True:
-            # Current Issue: mappedHNodes does not have any value one the function returns
-            mappedHNodes = list(mapKeyOriginal)
+            mappedHNodes[:] = list(mapKeyOriginal)
             result.append(mapValueOriginal)
             return result
         
