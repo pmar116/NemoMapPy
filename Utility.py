@@ -120,8 +120,8 @@ class Utility:
         for range in usedRange:
             local = inputGraph.getNeighbors(range)
             for loc in local:
-                if loc not in usedRange:
-                    neightborList.append(loc)
+                if int(loc) not in usedRange:
+                    neightborList.append(int(loc))
         neightborList.sort()
         neightborList = list(set(neightborList))
         return neightborList
@@ -136,9 +136,9 @@ class Utility:
         :return: boolean True if node n can be mapped to node m, otherwise false
         """
         for d in partialMap:
-            neighborsOfd = inputGraph.getNeighbors(d)
-            if d in neighborsOfM:
-                if n not in neighborsOfd:
+            neighborsOfd = inputGraph.getNeighbors(partialMap[d][0])
+            if str(d) in neighborsOfM:
+                if str(n) not in neighborsOfd:
                     return True
             else:
                 if n in neighborsOfd:
@@ -155,7 +155,7 @@ class Utility:
         :param n: ID number of node n of target graph
         :return: True if the symmetry-breaking condition is satisfied and the mapping is okay, False == mapping not okay
         """
-        if m not in nodesToCheck or ((m != fixed) and partialMap.index(fixed)==partialMap[-1]):
+        if m not in nodesToCheck or ((m != fixed) and partialMap.index(fixed)== partialMap[-1]):
             return True
 
         fixedLabel = 0
@@ -207,7 +207,10 @@ class Utility:
 
         for maps in theMappings:
             for i in range(0, len(maps)):
-                equivalenceFilter[int(i)] = [maps[i]]
+                if int(i) in equivalenceFilter:
+                    equivalenceFilter[int(i)].append(maps[i])
+                else:
+                    equivalenceFilter[int(i)] = [maps[i]]
 
         maxSize = len(equivalenceFilter[int(0)])
 
@@ -216,12 +219,16 @@ class Utility:
         else:
             temp = equivalenceClass[int(0)]
 
-        for entry, value in equivalenceFilter:
-            if len(value) > 1:
-                equivalenceClass[int(entry)].append(value)
-                if len(value) > maxSize:
-                    maxSize= len(value)
-                    temp = value
+        """TO_DO: check if this works"""
+        for entry in equivalenceFilter:
+            if len(equivalenceFilter[entry]) > 1:
+                if entry in equivalenceClass:
+                    equivalenceClass[entry].append(entry)
+                else:
+                    equivalenceClass[entry] = [entry]
+                if len(equivalenceFilter[entry]) > maxSize:
+                    maxSize= len(equivalenceFilter[entry])
+                    temp = entry
 
         equivalenceClass = {key: val for key, val in equivalenceClass.items() if val not in temp}
 
@@ -229,7 +236,10 @@ class Utility:
 
         fixedNode = sortedTemp[0]
 
-        condition[fixedNode].append([sortedTemp])
+        if fixedNode in condition:
+            condition[fixedNode].append(sortedTemp)
+        else:
+            condition[fixedNode] = [sortedTemp]
 
         newMappings = []
 
@@ -331,9 +341,9 @@ class Utility:
         partialMapKeysH = []        #list
 
         '''extract list of keys and list of values from partialMap'''
-        for map in partialMap:
-            partialMapValuesG.append(partialMap[map])
-            partialMapKeysH.append(map)
+        for maps in partialMap:
+            partialMapValuesG.append(int(partialMap[maps][1]))
+            partialMapKeysH.append(int(partialMap[maps][0]))
 
         mapValueOriginal = partialMapValuesG
         mapKeyOriginal = partialMapKeysH
@@ -341,7 +351,8 @@ class Utility:
         partialMapKeysH.sort()
 
         if self.equalDtoH(queryGraph.getVertexList(), partialMapKeysH) == True:
-            mappedHNodes = mapKeyOriginal
+            # Current Issue: mappedHNodes does not have any value one the function returns
+            mappedHNodes = list(mapKeyOriginal)
             result.append(mapValueOriginal)
             return result
         
@@ -356,7 +367,7 @@ class Utility:
         for n in neighbourRange:
             if not self.isNeighbourIncompatible(inputGraph, n, partialMap, neighborsOfM):
                 newPartialMap = partialMap  #dict of pairs
-                partialMap[m] = n
+                partialMap[m] = [int(m), int(n)]
 
                 '''vector <vector <int> >'''
                 subList = self.isomorphicExtensionForEquivalenceClass(newPartialMap, queryGraph, inputGraph, mappedHNodes)
@@ -372,16 +383,16 @@ class Utility:
         :return: a set of symmetry-breaking conditions for each represented node from each equivalance class
         """
         vertexList = queryGraph.getVertexList()
-        #h = vertexList[next(iter(vertexList))][0]
-        h = 1
+        h = vertexList[next(iter(vertexList))][0]
 
         inputGraphDegSeq = queryGraph.getNodesSortedByDegree(queryGraph.getOutDegree(h))
         theMappings = []        #2d list
-        f = {}                  #dictionary
+
         mappedHNodes = []       #list
 
         for item in inputGraphDegSeq:
-            f[h] = item
+            f = {}  # dictionary of pairs
+            f[h] = [int(h), int(item)]
             mappings = self.isomorphicExtensionForEquivalenceClass(f, queryGraph, queryGraph, mappedHNodes)
             #theMappings
             for maps in mappings:
