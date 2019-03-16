@@ -123,7 +123,7 @@ class Utility:
                 if int(loc) not in usedRange:
                     neightborList.append(int(loc))
         neightborList.sort()
-        neightborList = list(set(neightborList))
+        neightborList[:] = list(set(neightborList))
         return neightborList
 
     def isNeighbourIncompatible(self, inputGraph, n, partialMap, neighborsOfM):
@@ -345,8 +345,8 @@ class Utility:
             partialMapValuesG.append(int(partialMap[maps][1]))
             partialMapKeysH.append(int(partialMap[maps][0]))
 
-        mapValueOriginal = partialMapValuesG
-        mapKeyOriginal = partialMapKeysH
+        mapValueOriginal = list(partialMapValuesG)
+        mapKeyOriginal = list(partialMapKeysH)
         partialMapValuesG.sort()
         partialMapKeysH.sort()
 
