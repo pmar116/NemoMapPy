@@ -58,9 +58,9 @@ class Utility:
 
         for i in range(0, neighborListSize):
             constraintRank[i][1] = neighborList[i]
-            local = [0] * (queryGraph.getNeighbors(neighborList[i]))
+            local = queryGraph.getNeighbors(neighborList[i])
             for loc in local:
-                if self.binarySearch(domain[0], domain[-1], loc):
+                if int(loc) in domain:
                     constraintRank[i][0] += 1
 
         "Rank neighbor nodes with most already-mapped neighbors"
@@ -120,7 +120,7 @@ class Utility:
         for range in usedRange:
             local = inputGraph.getNeighbors(range)
             for loc in local:
-                if loc in usedRange:
+                if loc not in usedRange:
                     neightborList.append(loc)
         neightborList.sort()
         neightborList = list(set(neightborList))
@@ -131,13 +131,13 @@ class Utility:
         Method to check if a neighbor node n of the target graph could be mapped to a node m of the query graph
         :param inputGraph: target graph
         :param n: ID of the node n in the target graph
-        :param partialMap: the current partial mapping from query graph to target graph
+        :param partialMap: the current partial mapping from query graph to target graph #dit
         :param neighborsOfM: the list of neighbors of node m to the query graph
         :return: boolean True if node n can be mapped to node m, otherwise false
         """
         for d in partialMap:
-            neighborsOfd = inputGraph.getNeighbors(d[1])
-            if d[0] in neighborsOfM:
+            neighborsOfd = inputGraph.getNeighbors(d)
+            if d in neighborsOfM:
                 if n not in neighborsOfd:
                     return True
             else:
@@ -209,7 +209,7 @@ class Utility:
             for i in range(0, len(maps)):
                 equivalenceFilter[int(i)] = [maps[i]]
 
-        maxSize = len(equivalenceFilter[0])
+        maxSize = len(equivalenceFilter[int(0)])
 
         if len(equivalenceClass) == 0:
             temp = equivalenceFilter[int(0)]
@@ -345,7 +345,7 @@ class Utility:
             result.append(mapValueOriginal)
             return result
         
-        m = self.getMostConstrainedNeighbour(partialMapKeysH, queryGraph)
+        m = int(self.getMostConstrainedNeighbour(partialMapKeysH, queryGraph))
         if m < 0:
             return listOfIsomorphisms
         
@@ -372,7 +372,8 @@ class Utility:
         :return: a set of symmetry-breaking conditions for each represented node from each equivalance class
         """
         vertexList = queryGraph.getVertexList()
-        h = vertexList[next(iter(vertexList))][0]
+        #h = vertexList[next(iter(vertexList))][0]
+        h = 1
 
         inputGraphDegSeq = queryGraph.getNodesSortedByDegree(queryGraph.getOutDegree(h))
         theMappings = []        #2d list
