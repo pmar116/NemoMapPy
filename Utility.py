@@ -137,7 +137,7 @@ class Utility:
         """
         for d in partialMap:
             neighborsOfd = inputGraph.getNeighbors(partialMap[d][1])
-            if str(d) in neighborsOfM:
+            if str(partialMap[d][0]) in neighborsOfM:
                 if str(n) not in neighborsOfd:
                     return True
             else:
@@ -160,9 +160,10 @@ class Utility:
 
         fixedLabel = 0
         if m == fixed:
-            fixedLabel = n
+            fixedLabel = int(n)
         else:
-            fixedLabel = partialMap[fixed]
+            if fixed in partialMap.keys():
+                fixedLabel = int(partialMap[fixed][1])
 
         if m == fixed:
             for node in nodesToCheck:
@@ -171,7 +172,7 @@ class Utility:
                         return False
             return True
         else:
-            return n >= fixedLabel
+            return int(n) >= fixedLabel
 
     def equalDtoH(self, obj1, obj2):
         """
@@ -182,10 +183,12 @@ class Utility:
         :param obj2: list of keys
         :return: boolean isEqual
         """
+        temp = []
         if len(obj1) != len(obj2):
             return False
         for key in obj1:
-            if not key in obj2:
+            temp.append(int(key))
+            if temp.sort() != obj2.sort():
                 return False
         return True
     
@@ -212,7 +215,10 @@ class Utility:
                 else:
                     equivalenceFilter[int(i)] = [maps[i]]
 
-        maxSize = len(equivalenceFilter[int(0)])
+        if 0 in equivalenceFilter.keys():
+            maxSize = len(equivalenceFilter[int(0)])
+        else:
+            maxSize = 0
 
         if len(equivalenceClass) == 0:
             temp = equivalenceFilter[int(0)]
@@ -302,12 +308,12 @@ class Utility:
                 for node in possibleMappingNodes:
                     if node in neighborsOfMappedGNode:
                         temp.append(node)
-                possibleMappingNodes = temp
+                possibleMappingNodes[:] = temp
             else:
                 for node in possibleMappingNodes:
                     if node not in neighborsOfMappedGNode:
                         temp.append(node)
-                possibleMappingNodes = temp
+                possibleMappingNodes[:] = temp
 
         for n in possibleMappingNodes:
             if not self.isNeighbourIncompatible(inputGraph, n, partialMap, neighborsOfM):
