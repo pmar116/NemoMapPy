@@ -155,7 +155,7 @@ class Utility:
         :param n: ID number of node n of target graph
         :return: True if the symmetry-breaking condition is satisfied and the mapping is okay, False == mapping not okay
         """
-        if m not in nodesToCheck or ((m != fixed) and partialMap.index(fixed)== partialMap[-1]):
+        if m not in nodesToCheck or (m != fixed):   # and partialMap.index(fixed)== partialMap[-1]):
             return True
 
         fixedLabel = 0
@@ -268,8 +268,8 @@ class Utility:
             partialMapValvuesG.append(partialMap[item])
             partialMapKeysH.append(item)
 
-        mapValueOriginal = partialMapValvuesG
-        mapKeyOriginal = partialMapKeysH
+        mapValueOriginal = list(partialMapValvuesG)
+        mapKeyOriginal = list(partialMapKeysH)
 
         partialMapValvuesG.sort()
         partialMapKeysH.sort()
@@ -285,18 +285,18 @@ class Utility:
         bestMappedNeighborOfM = -1
         for neighbor in neighborsOfM:
             # this might not work with dictionaries since they don't care about order
-            if partialMap[neighbor] != partialMap[-1]:
-                bestMappedNeighborOfM = neighbor
-                break
+            # if partialMap[neighbor] != partialMap[-1]:
+            bestMappedNeighborOfM = neighbor
+            break
 
         possibleMappingNodes = []
-        for node in inputGraph.GetNeighbors(partialMap[bestMappedNeighborOfM]):
-            if node in partialMapValvuesG:
+        for node in inputGraph.getNeighbors(int(bestMappedNeighborOfM)):
+            if node not in partialMapValvuesG:
                 possibleMappingNodes.append(node)
 
         partialMapKeysHSize = len(partialMapKeysH)
-        for i in range(0,partialMapKeysHSize):
-            neighborsOfMappedGNode = (inputGraph.getNeighbors(mapValueOriginal[i]))
+        for i in range(0, partialMapKeysHSize):
+            neighborsOfMappedGNode = (inputGraph.getNeighbors(mapValueOriginal[0][i]))
             temp = []
             if mapKeyOriginal[i] in neighborsOfM:
                 for node in possibleMappingNodes:
@@ -313,7 +313,7 @@ class Utility:
             if not self.isNeighbourIncompatible(inputGraph, n, partialMap, neighborsOfM):
                 skip = False
                 for condition in symBreakCondition:
-                    if not self.checkSymmetryBreak(condition[0], condition[1], partialMap, m, n):
+                    if not self.checkSymmetryBreak(symBreakCondition[condition][0], symBreakCondition[condition][1], partialMap, m, n):
                         skip = True
                         break
                 if skip:
@@ -420,20 +420,21 @@ class Utility:
         print("Size condition: %d" % len(condition))
 
         for con in condition:
-            print("%d => " % con[0], end='')
-            for value in con[1]:
-                print("%d - " % value, end='')
+            print(str(con) + " => " + str(condition[con][0]), end='')
+            '''for value in condition[con][1]:
+                print("%d - " + str(value), end='')'''
             print("")
         print("")
 
         inputGraphDegSeq = inputGraph.getNodesSortedByDegree(queryGraph.getOutDegree(h))
-        print("h neighbor size: %d" % queryGraph.getNeighbors(h).size())
+        print("h neighbor size: %d" % len(queryGraph.getNeighbors(h)))
 
-        f = []
+
         mappingCount = 0
 
         for value in inputGraphDegSeq:
-            f[h] = value
+            f = {}
+            f[h] = [int(h), int(value)]
             mappingCount += self.isomorphicExtension(f, queryGraph, inputGraph, condition)
 
         return mappingCount
