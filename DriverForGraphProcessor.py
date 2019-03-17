@@ -32,7 +32,7 @@ if goodInput:
     main output
     print stats
     """
-    print("\n\n")
+    print("\n")
     print("Input Graph: Nodes - %d; Edges - %d" % (inputGraph.getNumberofVertices(), inputGraph.getNumberofEdges()))
     print("Query Graph: Nodes - %d; Edges - %d" % (queryGraph.getNumberofVertices(), queryGraph.getNumberofEdges()))
 
@@ -42,14 +42,14 @@ if goodInput:
 
     h = queryGraph.getNodesSortedByDegree(0)
     h1 = h[-1]
-    print("\nH node = [ %d ]" % h1)
 
     timeStart = time.time()
     totalMappings = myUtility.algorithm2_modified(queryGraph, inputGraph, h1)
     a = 0
     timeEnd = time.time()
+    print("\nH node = [ %d ]" % h1)
+    print("Mapping: %d" % totalMappings)
     print("Time taken: %s seconds" % (timeEnd-timeStart))
 
-    print("\nMapping: %d" % totalMappings)
 else:
     exit()

@@ -329,6 +329,7 @@ class Utility:
 
                 subList = self.isomorphicExtension(newPartialMap, queryGraph, inputGraph, symBreakCondition)
                 listOfIsomorphisms += subList
+
         return listOfIsomorphisms
 
     def isomorphicExtensionForEquivalenceClass(self, partialMap, queryGraph, inputGraph, mappedHNodes):
@@ -422,14 +423,11 @@ class Utility:
         :return: The count of all of possible mappings of the query graph to the target graph
         """
         condition = self.algorithm2_modified_for_equivalance_class(queryGraph, h)
-        print("Size condition: %d" % len(condition))
+        print("\nSize condition: %d" % len(condition))
 
         for con in condition:
             print(str(con) + " => " + str(condition[con][0]), end='')
-            '''for value in condition[con][1]:
-                print("%d - " + str(value), end='')'''
             print("")
-        print("")
 
         inputGraphDegSeq = inputGraph.getNodesSortedByDegree(queryGraph.getOutDegree(h))
         print("h neighbor size: %d" % len(queryGraph.getNeighbors(h)))
