@@ -136,12 +136,12 @@ class Utility:
         :return: boolean True if node n can be mapped to node m, otherwise false
         """
         for d in partialMap:
-            neighborsOfd = inputGraph.getNeighbors(partialMap[d][0])
+            neighborsOfd = inputGraph.getNeighbors(partialMap[d][1])
             if str(d) in neighborsOfM:
                 if str(n) not in neighborsOfd:
                     return True
             else:
-                if n in neighborsOfd:
+                if str(n) in neighborsOfd:
                     return True
         return False
 
@@ -166,8 +166,8 @@ class Utility:
 
         if m == fixed:
             for node in nodesToCheck:
-                if partialMap.index(node) != partialMap[-1]:
-                    if partialMap[node] < fixedLabel:
+                if node in partialMap.keys():
+                    if partialMap[node][0] < int(fixedLabel):
                         return False
             return True
         else:
@@ -264,15 +264,6 @@ class Utility:
         listOfIsomorphisms = 0  # 2d list
         partialMapValvuesG = []  # list
         partialMapKeysH = []  # list
-        '''for item in partialMap:
-            partialMapValvuesG.append(partialMap[item])
-            partialMapKeysH.append(item)
-
-        mapValueOriginal = list(partialMapValvuesG)
-        mapKeyOriginal = list(partialMapKeysH)
-
-        partialMapValvuesG.sort()
-        partialMapKeysH.sort()'''
         for maps in partialMap:
             partialMapValvuesG.append(int(partialMap[maps][1]))
             partialMapKeysH.append(int(partialMap[maps][0]))
@@ -283,6 +274,7 @@ class Utility:
         partialMapKeysH.sort()
 
         if self.equalDtoH(queryGraph.getVertexList(), partialMapKeysH):
+            #partialMapKeysH[:] = list(mapKeyOriginal)
             return 1
 
         m = self.getMostConstrainedNeighbour(partialMapKeysH, queryGraph)
@@ -298,22 +290,22 @@ class Utility:
             break
 
         possibleMappingNodes = []
-        for node in inputGraph.getNeighbors(int(bestMappedNeighborOfM)):
-            if node not in partialMapValvuesG:
+        for node in inputGraph.getNeighbors(partialMap[int(bestMappedNeighborOfM)][1]):
+            if int(node) not in partialMapValvuesG:
                 possibleMappingNodes.append(node)
 
         partialMapKeysHSize = len(partialMapKeysH)
         for i in range(0, partialMapKeysHSize):
             neighborsOfMappedGNode = (inputGraph.getNeighbors(mapValueOriginal[i]))
             temp = []
-            if mapKeyOriginal[i] in neighborsOfM:
+            if str(mapKeyOriginal[i]) in neighborsOfM:
                 for node in possibleMappingNodes:
                     if node in neighborsOfMappedGNode:
                         temp.append(node)
                 possibleMappingNodes = temp
             else:
                 for node in possibleMappingNodes:
-                    if node in neighborsOfMappedGNode:
+                    if node not in neighborsOfMappedGNode:
                         temp.append(node)
                 possibleMappingNodes = temp
 
@@ -327,7 +319,7 @@ class Utility:
                 if skip:
                     continue
                 newPartialMap = partialMap  # dict of pairs
-                partialMap[condition] = [int(condition), int(n)]
+                newPartialMap[m] = [int(m), int(n)]
 
                 subList = self.isomorphicExtension(newPartialMap, queryGraph, inputGraph, symBreakCondition)
                 listOfIsomorphisms += subList
