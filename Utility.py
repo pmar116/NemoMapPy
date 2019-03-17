@@ -261,7 +261,7 @@ class Utility:
         :param symBreakCondition: set of symmetry-breaking conditions
         :return: int representing the count of all the isomorphic extensions
         """
-        listOfIsomorphisms = []  # 2d list
+        listOfIsomorphisms = 0  # 2d list
         partialMapValvuesG = []  # list
         partialMapKeysH = []  # list
         '''for item in partialMap:
@@ -326,12 +326,11 @@ class Utility:
                         break
                 if skip:
                     continue
-                newPartialMap = partialMap
-                newPartialMap[m] = n
+                newPartialMap = partialMap  # dict of pairs
+                partialMap[condition] = [int(condition), int(n)]
 
                 subList = self.isomorphicExtension(newPartialMap, queryGraph, inputGraph, symBreakCondition)
-                for item in subList:
-                    listOfIsomorphisms.append(item)
+                listOfIsomorphisms += subList
         return listOfIsomorphisms
 
     def isomorphicExtensionForEquivalenceClass(self, partialMap, queryGraph, inputGraph, mappedHNodes):
