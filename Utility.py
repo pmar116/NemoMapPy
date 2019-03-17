@@ -264,13 +264,21 @@ class Utility:
         listOfIsomorphisms = []  # 2d list
         partialMapValvuesG = []  # list
         partialMapKeysH = []  # list
-        for item in partialMap:
+        '''for item in partialMap:
             partialMapValvuesG.append(partialMap[item])
             partialMapKeysH.append(item)
 
         mapValueOriginal = list(partialMapValvuesG)
         mapKeyOriginal = list(partialMapKeysH)
 
+        partialMapValvuesG.sort()
+        partialMapKeysH.sort()'''
+        for maps in partialMap:
+            partialMapValvuesG.append(int(partialMap[maps][1]))
+            partialMapKeysH.append(int(partialMap[maps][0]))
+
+        mapValueOriginal = list(partialMapValvuesG)
+        mapKeyOriginal = list(partialMapKeysH)
         partialMapValvuesG.sort()
         partialMapKeysH.sort()
 
@@ -296,7 +304,7 @@ class Utility:
 
         partialMapKeysHSize = len(partialMapKeysH)
         for i in range(0, partialMapKeysHSize):
-            neighborsOfMappedGNode = (inputGraph.getNeighbors(mapValueOriginal[0][i]))
+            neighborsOfMappedGNode = (inputGraph.getNeighbors(mapValueOriginal[i]))
             temp = []
             if mapKeyOriginal[i] in neighborsOfM:
                 for node in possibleMappingNodes:
@@ -313,7 +321,7 @@ class Utility:
             if not self.isNeighbourIncompatible(inputGraph, n, partialMap, neighborsOfM):
                 skip = False
                 for condition in symBreakCondition:
-                    if not self.checkSymmetryBreak(symBreakCondition[condition][0], symBreakCondition[condition][1], partialMap, m, n):
+                    if not self.checkSymmetryBreak(symBreakCondition[condition][0][0], symBreakCondition[condition][0], partialMap, m, n):
                         skip = True
                         break
                 if skip:
