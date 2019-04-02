@@ -31,7 +31,7 @@ class Utility:
         pos = bisect_left(a, x, lo, hi)  # find insertion position
         return pos if pos != hi and a[pos] == x else -1
 
-    def getMostConstrainedNeighbour(self, domain, queryGraph):
+    def getMostConstrainedNeighbour(self, domain: list, queryGraph: Graph) -> int:
         """
         Method to find the most constrained neighboring node of mapped nodes in the query graph.
 

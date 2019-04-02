@@ -30,7 +30,7 @@ class Graph:
     getOutDegree: get out degree of a vertex
 
     """
-    def __init__(self, edgeList):
+    def __init__(self, edgeList: list):
         """
         Constructor: create a graph by updating self.edgeList and self.vertexList
             :param edgeList: Contains list of edges to be used to create a graph
@@ -72,7 +72,7 @@ class Graph:
 
 
 
-    def addEdge(self, edge):
+    def addEdge(self, edge: list) -> bool:
         """
         addEdge: add a edge and its corresponding vertices to the graph
         :param edge: the edge to be added
@@ -113,7 +113,7 @@ class Graph:
         """
         return len(self.edgeList)
 
-    def getNodesSortedByDegree(self, degreeCutOff):
+    def getNodesSortedByDegree(self, degreeCutOff: int) -> list:
         """
         GetNodesSortedByDegree: get a list of vertices sorted by their degree sequence 
         :param degreeCutOff: the threshold of out degree that we want to check
@@ -134,7 +134,7 @@ class Graph:
             result.append(vertex[1])
         return result
 
-    def tryGetEdge(self, edge):
+    def tryGetEdge(self, edge: list) -> bool:
         """
         tryGetEdge: check if an edge exist in the graph
         :param edge: the edge we are trying to find
@@ -149,7 +149,7 @@ class Graph:
             return True
         return False
 
-    def getNeighbors(self, source):
+    def getNeighbors(self, source: int) -> list:
         """
         getNeighbors: return the neighbors of the source
         :param source: the vertex we are finding the neighbors of
@@ -157,7 +157,7 @@ class Graph:
         """
         return self.vertexList.get(int(source), -1)
 
-    def getDegreeSequence(self):
+    def getDegreeSequence(self) -> list:
         """
         get degree sequence of all vertices in descending order
         :return: degree sequence of all vertices in descending order
@@ -167,26 +167,33 @@ class Graph:
             result.append(len(self.vertexList[key]))
         return sorted(result, key = int, reverse=True)
 
-    def getEdgeList(self):
+    def getEdgeList(self) -> list:
         """
         :return: the 2d list of edges
         """
         return self.edgeList
 
-    def getVertexList(self):
+    def getVertexList(self) -> dict:
         """
         :return: the dictionary containing the vertex list
         """
         return self.vertexList
 
-    def getOutDegree(self, source):
+    def getOutDegree(self, source) -> int:
         """
         get out degree of a vertex
         :param source: vertex whose degree you want to find
-        :return: degree of the vertex
+        :return: int degree of the vertex if exists, -1 if doesn't exist
         """
-        return len(self.vertexList[int(source)])
+        if source in self.vertexList:
+            return len(self.vertexList[int(source)])
+        else:
+            return -1    
 
+    """
+    *   Testing methods
+    *   mostly returns dicts and prints out data
+    """
     def testEdgeList(self):
         return self.edgeList
     def testVertexList(self):
