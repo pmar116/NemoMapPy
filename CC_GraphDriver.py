@@ -15,8 +15,8 @@ print("Graph Created!")
 '''Get edge list from graph to test creation of graph class'''
 print("TEST GET EDGE LIST\n")
 list = myGraph.testEdgeList()
-#for item in list:
-    #print(item)
+for item in list:
+    print(item)
 
 
 '''Get vertex list'''

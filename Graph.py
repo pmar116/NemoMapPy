@@ -1,3 +1,4 @@
+from typing import Dict, List
 class Graph:
     """
     A Class to represent a network
@@ -30,7 +31,7 @@ class Graph:
     getOutDegree: get out degree of a vertex
 
     """
-    def __init__(self, edgeList: list):
+    def __init__(self, edgeList: List[List[int]]):
         """
         Constructor: create a graph by updating self.edgeList and self.vertexList
             :param edgeList: Contains list of edges to be used to create a graph
@@ -72,7 +73,7 @@ class Graph:
 
 
 
-    def addEdge(self, edge: list) -> bool:
+    def addEdge(self, edge: List[int]) -> bool:
         """
         addEdge: add a edge and its corresponding vertices to the graph
         :param edge: the edge to be added
@@ -113,7 +114,7 @@ class Graph:
         """
         return len(self.edgeList)
 
-    def getNodesSortedByDegree(self, degreeCutOff: int) -> list:
+    def getNodesSortedByDegree(self, degreeCutOff: int) -> List[int]:
         """
         GetNodesSortedByDegree: get a list of vertices sorted by their degree sequence 
         :param degreeCutOff: the threshold of out degree that we want to check
@@ -134,7 +135,7 @@ class Graph:
             result.append(vertex[1])
         return result
 
-    def tryGetEdge(self, edge: list) -> bool:
+    def tryGetEdge(self, edge: List[int]) -> bool:
         """
         tryGetEdge: check if an edge exist in the graph
         :param edge: the edge we are trying to find
@@ -149,7 +150,7 @@ class Graph:
             return True
         return False
 
-    def getNeighbors(self, source: int) -> list:
+    def getNeighbors(self, source: int) -> List[int]:
         """
         getNeighbors: return the neighbors of the source
         :param source: the vertex we are finding the neighbors of
@@ -157,7 +158,7 @@ class Graph:
         """
         return self.vertexList.get(int(source), -1)
 
-    def getDegreeSequence(self) -> list:
+    def getDegreeSequence(self) -> List[int]:
         """
         get degree sequence of all vertices in descending order
         :return: degree sequence of all vertices in descending order
@@ -167,19 +168,19 @@ class Graph:
             result.append(len(self.vertexList[key]))
         return sorted(result, key = int, reverse=True)
 
-    def getEdgeList(self) -> list:
+    def getEdgeList(self) -> List[List[int]]:
         """
         :return: the 2d list of edges
         """
         return self.edgeList
 
-    def getVertexList(self) -> dict:
+    def getVertexList(self) -> Dict[int,List[int]]:
         """
         :return: the dictionary containing the vertex list
         """
         return self.vertexList
 
-    def getOutDegree(self, source) -> int:
+    def getOutDegree(self, source: int) -> int:
         """
         get out degree of a vertex
         :param source: vertex whose degree you want to find

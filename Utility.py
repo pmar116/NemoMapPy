@@ -1,5 +1,6 @@
 from Graph import Graph
-from bisect import  bisect_left
+from typing import Dict, List
+from bisect import bisect_left
 class Utility:
     """
     A Class to help do Motif-based search computations
@@ -31,7 +32,8 @@ class Utility:
         pos = bisect_left(a, x, lo, hi)  # find insertion position
         return pos if pos != hi and a[pos] == x else -1
 
-    def getMostConstrainedNeighbour(self, domain: list, queryGraph: Graph) -> int:
+    def getMostConstrainedNeighbour(self, domain: List[int],
+                                    queryGraph: Graph) -> int:
         """
         Method to find the most constrained neighboring node of mapped nodes in the query graph.
 
@@ -107,15 +109,15 @@ class Utility:
         return constraintRank[0][1]
 
 
-    def chooseNeightboursOfRange(self, usedRange, inputGraph, neightborList):
+    def chooseNeightboursOfRange(self, usedRange: List[int],
+                                 inputGraph: Graph,
+                                 neightborList: List[int]):
         """
         Method to get all neighbors of a set of nodes in a graph (no duplicate neighbors allowed)
             :param   usedRange: the IDs of the target set of nodes
             :param   inputGraph: the graph to be searched for motif
             :param   neightborList: the reference to the return list of neighbors
             :return:  modified neighborList
-
-            TODO: confirm if this works or not
         """
         for range in usedRange:
             local = inputGraph.getNeighbors(range)
@@ -126,7 +128,10 @@ class Utility:
         neightborList[:] = list(set(neightborList))
         return neightborList
 
-    def isNeighbourIncompatible(self, inputGraph, n, partialMap, neighborsOfM):
+    def isNeighbourIncompatible(self, inputGraph: Graph,
+                                n: int,
+                                partialMap: Dict[int, int],
+                                neighborsOfM: List[int]) -> bool:
         """
         Method to check if a neighbor node n of the target graph could be mapped to a node m of the query graph
         :param inputGraph: target graph
@@ -145,7 +150,11 @@ class Utility:
                     return True
         return False
 
-    def checkSymmetryBreak(self, fixed, nodesToCheck, partialMap, m, n):
+    def checkSymmetryBreak(self, fixed: int,
+                           nodesToCheck: List[int],
+                           partialMap: Dict[int, int],
+                           m: int,
+                           n: int) -> bool:
         """
         Method to check if a mapping from node m of query graph to node n of target graph satisfy the symmetry-breaking conditions
         :param fixed: the representative node from each equivalence class
@@ -174,7 +183,8 @@ class Utility:
         else:
             return int(n) >= fixedLabel
 
-    def equalDtoH(self, obj1, obj2):
+    def equalDtoH(self, obj1: List[int],
+                  obj2:List[int]) -> bool:
         """
         Helper function to check if the list of keys of obj1 (D) is equal to obj2 (H)
         Equal if all elements of object 1's keys are present in object 2,
@@ -192,8 +202,11 @@ class Utility:
                 return False
         return True
     
-    
-    def findCondition(self, mappedHNodes, theMappings, condition, equivalenceClass):
+    #TODO find equivilance class data type
+    def findCondition(self, mappedHNodes: List[int],
+                      theMappings: List[List[int]],
+                      condition: Dict[int, List[int]],
+                      equivalenceClass) -> Dict[int, List[int]]:
         """
         Method to find the symmetry-breaking cinditions by Grochow-Kellis.
         *****NOTE*****: should combine this with Algorithm2_Modified_For_Equivalence_Class()
@@ -258,7 +271,10 @@ class Utility:
 
         return condition
 
-    def isomorphicExtension(self, partialMap, queryGraph, inputGraph, symBreakCondition):
+    def isomorphicExtension(self, partialMap: Dict[int, int],
+                            queryGraph: Graph,
+                            inputGraph: Graph,
+                            symBreakCondition: Dict[int, List[int]]) -> int:
         """
         Method to count all of the isomorphic extensions (no duplicates) of a partial map between the query graph and the target graph
         :param partialMap: the current partial mapping from query graph to target graph #is a dictionary
@@ -332,7 +348,10 @@ class Utility:
 
         return listOfIsomorphisms
 
-    def isomorphicExtensionForEquivalenceClass(self, partialMap, queryGraph, inputGraph, mappedHNodes):
+    def isomorphicExtensionForEquivalenceClass(self, partialMap: Dict[int, int],
+                                               queryGraph: Graph,
+                                               inputGraph: Graph,
+                                               mappedHNodes: List[int]) -> List[List[int]]:
         """
         Helper method to find all of the isomorphic extensions of a partial map between the query graph and itself
         :param partialMap: dictionary
@@ -380,7 +399,8 @@ class Utility:
                     listOfIsomorphisms.append(item)
         return listOfIsomorphisms
 
-    def algorithm2_modified_for_equivalance_class(self, queryGraph, fixedNode):
+    def algorithm2_modified_for_equivalance_class(self, queryGraph: Graph,
+                                                  fixedNode: int) -> Dict[int, List[int]]:
         """
         Method to find the symmetry-breaking conditions by Grochow-Kellis. It starts by choosing one node to be the anchor point and create conditions from
         :param queryGraph: reference to query graph
@@ -408,7 +428,9 @@ class Utility:
 
         return self.findCondition(mappedHNodes, theMappings, condition, equivalenceClass)
 
-    def algorithm2_modified(self, queryGraph, inputGraph, h):
+    def algorithm2_modified(self, queryGraph: Graph,
+                            inputGraph: Graph,
+                            h: int) -> int:
         """
         Method to use NemoMap algorithm (i.e. Algorithm 5 from the NemoMap paper)
             ***Modified from Grochow-Kelis algorithm***
