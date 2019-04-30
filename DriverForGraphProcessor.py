@@ -3,11 +3,11 @@ from GraphProcessor import GraphProcessor
 from Utility import Utility
 
 '''Get File names and see if they can be opened'''
-inputName = input("Input Graph: ")
-queryName = input("Query Graph: ")
+#inputName = input("Input Graph: ")
+#queryName = input("Query Graph: ")
 '''Testing input'''
-#inputName = "input.txt"
-#ueryName = "query.txt"
+inputName = "input.txt"
+queryName = "query.txt"
 
 goodInput = True
 try:
@@ -44,9 +44,10 @@ if goodInput:
     h = queryGraph.getNodesSortedByDegree(0)
     h1 = h[-1]
     print("\nH node = [ %d ]" % h1)
+
+    '''run the nemomap alg'''
     timeStart = time.time()
     totalMappings = myUtility.algorithm2_modified(queryGraph, inputGraph, h1)
-    a = 0
     timeEnd = time.time()
 
     print("\nMapping: %d" % totalMappings)

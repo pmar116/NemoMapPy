@@ -22,10 +22,15 @@ class GraphProcessor:
         edgeList = []
         with open(fileName) as myFile:
             for line in myFile:
-                '''edgeList is a 2D list with each index of edgeList
-                    containing exactly one edge. edgeList[index][0] is the
-                    first number in a pair, edgeList[index][1] is the seccond'''
-                edgeList.append(line.split())
+                if "#" not in line:     #catch comments
+                    pair = [int(i) for i in line.split()]   #read in as integers
+                    if pair[0] != pair[1]:
+                        """
+                        edgeList is a 2D list with each index of edgeList
+                        containing exactly one edge. edgeList[index][0] is the
+                        first number in a pair, edgeList[index][1] is the seccond
+                        """
+                        edgeList.append(pair)
 
         newGraph = Graph(edgeList)
         return newGraph
