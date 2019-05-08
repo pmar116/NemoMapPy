@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fe9ac6cb-283b-4e83-9c0b-f62c9cf7dfb7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DriverForGraphProcessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/DriverForGraphProcessor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GraphProcessor.py" beforeDir="false" afterPath="$PROJECT_DIR$/GraphProcessor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Utility.py" beforeDir="false" afterPath="$PROJECT_DIR$/Utility.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Utility.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="414" column="19" lean-forward="true" selection-start-line="414" selection-start-column="19" selection-end-line="414" selection-end-column="19" />
+            <state relative-caret-position="614">
+              <caret line="250" column="31" selection-start-line="250" selection-start-column="31" selection-end-line="250" selection-end-column="31" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -63,10 +60,10 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="952" />
-    <option name="width" value="977" />
-    <option name="height" value="1038" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="1273" />
+    <option name="width" value="1294" />
+    <option name="height" value="1407" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -280,7 +277,14 @@
       <option name="project" value="LOCAL" />
       <updated>1554610435812</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="bug fixes in isomorphic extension for equivilance class">
+      <created>1556661863961</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1556661863961</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView">
@@ -293,15 +297,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="1273" y="0" width="1294" height="1407" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.0997358" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.19984077" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.35643566" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.33359498" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39745402" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -349,7 +353,8 @@
     <MESSAGE value="added isomorphicextensionequivalenceclass" />
     <MESSAGE value="update output" />
     <MESSAGE value="updated input output data types" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated input output data types" />
+    <MESSAGE value="bug fixes in isomorphic extension for equivilance class" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fixes in isomorphic extension for equivilance class" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.vscode/Utility.py" />
@@ -387,8 +392,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Utility.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="414" column="19" lean-forward="true" selection-start-line="414" selection-start-column="19" selection-end-line="414" selection-end-column="19" />
+        <state relative-caret-position="614">
+          <caret line="250" column="31" selection-start-line="250" selection-start-column="31" selection-end-line="250" selection-end-column="31" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>

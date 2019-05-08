@@ -228,22 +228,27 @@ class Utility:
             return condition
 
         equivalenceFilter = {}
+        for i in range(0, len(mappedHNodes)):
+            equivalenceFilter[i] = []
 
         for maps in theMappings:
             print("print theMappings")
             for i in range(0, len(maps)):
                 #TODO is conditional necessary?
+                """
                 if int(i) in equivalenceFilter:
                     equivalenceFilter[int(i)].append(maps[i])
                 else:
                     equivalenceFilter[int(i)] = [maps[i]]
+                """
+                equivalenceFilter[i].append(maps[i])
                 print("    i: %d maps[i]: %d" % (i, maps[i]))
 
-        #TODO is this necessarY?
         if 0 in equivalenceFilter.keys():
             maxSize = len(equivalenceFilter[int(0)])
         else:
             maxSize = 0
+        print("Max size - %d" % maxSize)
 
         if len(equivalenceClass) == 0:
             temp = equivalenceFilter[int(0)]
@@ -255,7 +260,7 @@ class Utility:
             print("found entry")
             if len(equivalenceFilter[entry]) > 1:
                 #TODO check if equivilance class needs insert
-                print("    has more than 1 entry")
+                print("    has more than 1 entry: %d" % entry)
                 if entry in equivalenceClass:
                     equivalenceClass[entry].append(entry)
                 else:
@@ -392,8 +397,7 @@ class Utility:
         :return:
         """
         print("-----Isomorphic Extension for Equivilance Class DEBUG ------")
-        for n in mappedHNodes:
-            print(n)
+
         result = []                 #2d list
         listOfIsomorphisms = []     #2d list
         partialMapValuesG = []      #list
@@ -431,7 +435,7 @@ class Utility:
             print("neighborRange: %d" % n)
             if not self.isNeighbourIncompatible(inputGraph, n, partialMap, neighborsOfM):
                 print("    neighbor is compatible")
-                newPartialMap = partialMap
+                newPartialMap = partialMap.copy()
                 print("    %d - %d" % (m, n))
                 newPartialMap[m] = int(n)
                 print("recursive call - isomorphic extension for equivalence")
