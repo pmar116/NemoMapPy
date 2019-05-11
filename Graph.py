@@ -156,7 +156,9 @@ class Graph:
         :param source: the vertex we are finding the neighbors of
         :return: list containing the neighbors of source
         """
-        return self.vertexList.get(int(source), -1)
+        neighborList = self.vertexList.get(source, -1)
+        neighborList.sort()
+        return neighborList
 
     def getDegreeSequence(self) -> List[int]:
         """
