@@ -6,8 +6,8 @@ from Utility import Utility
 #inputName = input("Input Graph: ")
 #queryName = input("Query Graph: ")
 '''Testing input'''
-inputName = "input.txt"
-queryName = "query.txt"
+inputName = "inputGraph.txt"
+queryName = "queryGraph.txt"
 
 goodInput = True
 try:
@@ -27,7 +27,6 @@ if goodInput:
     inputGraph = myGP.loadGraph(inputName)
     queryGraph = myGP.loadGraph(queryName)
     myUtility = Utility()
-
 
     """
     main output

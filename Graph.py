@@ -31,7 +31,10 @@ class Graph:
     getOutDegree: get out degree of a vertex
 
     """
-    def __init__(self, edgeList: List[List[int]]):
+    def __init__(self):
+        pass
+
+    def __init__(self, passedList: List[List[int]]):
         """
         Constructor: create a graph by updating self.edgeList and self.vertexList
             :param edgeList: Contains list of edges to be used to create a graph
@@ -41,37 +44,55 @@ class Graph:
         self.edgeList = []
         self.vertexList = {}
 
-        for item in edgeList:
-            '''used fro adding verticies to vertex list'''
-            found0 = False
-            found1 = False
-            '''check if item is in the list'''
-            if item not in self.edgeList:
-                '''check if the edge from the other direction is in the list'''
-                list2 = []
-                list2.append(item[1])
-                list2.append(item[0])
-                if list2 not in self.edgeList:
-                    self.edgeList.append(item)
+        for item in passedList:
+            source = item[0]
+            target = item[1]
+            if source not in self.vertexList:
+                self.vertexList[source] = []
+            if target in self.vertexList[source]:
+                continue
+            else:
+                self.vertexList[source].append(target)
+                self.vertexList[source].sort()
 
-            '''add vertex to vertex list'''
+            if target not in self.vertexList:
+                self.vertexList[target] = []
+            self.vertexList[target].append(source)
+            self.vertexList[target].sort()
+
+            self.edgeList.append(item)
+
+        """
+        for item in passedList:
+            source = item[0]
+            target = item[1]
+
+            '''start vertexList'''
             if len(self.vertexList) == 0:
-                self.vertexList[int(item[0])] = []
-                self.vertexList[int(item[1])] = []
-            if int(item[0]) in self.vertexList:
-                if item[1] not in self.vertexList[int(item[0])]:
-                    self.vertexList[int(item[0])].append(item[1])
+                self.vertexList[source] = []
+                self.vertexList[target] = []
+            '''insert source-target pair'''
+            if source in self.vertexList:
+                if target not in self.vertexList[source]:
+                    self.vertexList[source].append(target)
+                    self.vertexList[source].sort()
+                else:
+                    '''skip repeated item'''
+                    print("SKIPPED")
+                    continue
             else:
-                self.vertexList[int(item[0])] = []
-                self.vertexList[int(item[0])].append(item[1])
-            if int(item[1]) in self.vertexList:
-                if item[0] not in self.vertexList[int(item[1])]:
-                    self.vertexList[int(item[1])].append(item[0])
+                self.vertexList[source] = []
+                self.vertexList[source].append(target)
+            '''insert target-source pair'''
+            if target in self.vertexList:
+                self.vertexList[target].append(source)
+                self.vertexList[target].sort()
             else:
-                self.vertexList[int(item[1])] = []
-                self.vertexList[int(item[1])].append(item[0])
+                self.vertexList[target] = []
+                self.vertexList[target].append(source)
 
-
+            self.edgeList.append(item)
+            """
 
     def addEdge(self, edge: List[int]) -> bool:
         """
@@ -141,6 +162,7 @@ class Graph:
         :param edge: the edge we are trying to find
         :return:true if edge exist, false otherwise
         """
+
         edgeReverse = []
         edgeReverse.append(edge[1])
         edgeReverse.append(edge[0])
@@ -156,7 +178,7 @@ class Graph:
         :param source: the vertex we are finding the neighbors of
         :return: list containing the neighbors of source
         """
-        neighborList = self.vertexList.get(source, -1)
+        neighborList = self.vertexList.get(source, -1).copy()
         neighborList.sort()
         return neighborList
 
@@ -176,7 +198,7 @@ class Graph:
         """
         return self.edgeList
 
-    def getVertexList(self) -> Dict[int,List[int]]:
+    def getVertexList(self) -> Dict[int, List[int]]:
         """
         :return: the dictionary containing the vertex list
         """

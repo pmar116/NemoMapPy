@@ -321,9 +321,10 @@ class Utility:
         neighborsOfM: List[int] = queryGraph.getNeighbors(m)
         bestMappedNeighborOfM: int = 0
         for neighbor in neighborsOfM:
-            print("best mapped neighbor of m: %d" % neighbor)
-            bestMappedNeighborOfM: int = neighbor
-            break
+            if neighbor == neighborsOfM[-1]:
+                print("best mapped neighbor of m: %d" % neighbor)
+                bestMappedNeighborOfM: int = neighbor
+                break
 
         possibleMappingNodes: List[int] = []
         for node in inputGraph.getNeighbors(partialMap[bestMappedNeighborOfM]):
@@ -467,7 +468,6 @@ class Utility:
                 theMappings.append(maps)
 
         condition = {}          #dict
-        #TODO might change to set
         equivalenceClass = set()
 
         return self.findCondition(mappedHNodes, theMappings, condition, equivalenceClass)
