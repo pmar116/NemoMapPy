@@ -6,7 +6,7 @@ from Utility import Utility
 #inputName = input("Input Graph: ")
 #queryName = input("Query Graph: ")
 '''Testing input'''
-inputName = "inputGraph.txt"
+inputName = "exampleGraph.txt"
 queryName = "queryGraph.txt"
 
 goodInput = True

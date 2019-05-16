@@ -317,11 +317,12 @@ class Utility:
         if m < 0:
             print("m less than 0 - base case")
             return 0
-
+        print("m is %d"%m)
         neighborsOfM: List[int] = queryGraph.getNeighbors(m)
         bestMappedNeighborOfM: int = 0
         for neighbor in neighborsOfM:
-            if neighbor == neighborsOfM[-1]:
+            #if neighbor == neighborsOfM[-1]:
+            if neighbor in partialMap.keys():
                 print("best mapped neighbor of m: %d" % neighbor)
                 bestMappedNeighborOfM: int = neighbor
                 break
