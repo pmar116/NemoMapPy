@@ -3,11 +3,12 @@ from GraphProcessor import GraphProcessor
 from Utility import Utility
 
 '''Get File names and see if they can be opened'''
-#inputName = input("Input Graph: ")
-#queryName = input("Query Graph: ")
+inputName = input("Input Graph: ")
+queryName = input("Query Graph: ")
+
 '''Testing input'''
-inputName = "exampleGraph.txt"
-queryName = "queryGraph.txt"
+#inputName = "exampleGraph.txt"
+#queryName = "queryGraph.txt"
 
 goodInput = True
 try:

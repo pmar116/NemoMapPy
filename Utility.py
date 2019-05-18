@@ -53,7 +53,7 @@ class Utility:
         neighborListSize = len(neighborList)
 
         if neighborListSize == 1:
-            print("neighbor return %d" % neighborList[0])
+            #print("neighbor return %d" % neighborList[0])
             return neighborList[0]
         elif neighborListSize == 0:
             return -1
@@ -147,16 +147,16 @@ class Utility:
         :return: boolean True if node n can be mapped to node m, otherwise false
         """
         for d in partialMap:
-            print("D is %d" %d)
+            #print("D is %d" %d)
             neighborsOfd: List[int] = inputGraph.getNeighbors(partialMap[d])
             if d in neighborsOfM:
-                print("d is in neighborsOfM")
+                #print("d is in neighborsOfM")
                 if n not in neighborsOfd:
-                    print("--n is not in neighborsOfD")
+                    #print("--n is not in neighborsOfD")
                     return True
             else:
                 if n in neighborsOfd:
-                    print("n is in neighborsOfD")
+                    #print("n is in neighborsOfD")
                     return True
         return False
 
@@ -224,9 +224,9 @@ class Utility:
         :param equivalenceClass: Dictionary
         :return:
         """
-        print("----Find conditon Debug----")
+        #print("----Find conditon Debug----")
         if len(theMappings) == 1:
-            print("find condtion base case")
+            #print("find condtion base case")
             return condition
 
         equivalenceFilter = {}
@@ -234,14 +234,14 @@ class Utility:
             equivalenceFilter[i] = set()
 
         for maps in theMappings:
-            print("print theMappings")
+            #print("print theMappings")
             for i in range(0, len(maps)):
                 equivalenceFilter[i].add(maps[i])
-                print("    i: %d maps[i]: %d" % (i, maps[i]))
+                #print("    i: %d maps[i]: %d" % (i, maps[i]))
 
         filterkey = next(iter(equivalenceFilter))
         maxSize = len(equivalenceFilter[filterkey])
-        print("Max size - %d" % maxSize)
+        #print("Max size - %d" % maxSize)
 
         if len(equivalenceClass) == 0:
             temp = set(equivalenceFilter[filterkey])
@@ -251,18 +251,18 @@ class Utility:
 
         #entry is a reference to a set
         for entry in equivalenceFilter:
-            print("found entry")
+            #print("found entry")
             if len(equivalenceFilter[entry]) > 1:
-                print("    has more than 1 entry: %d" % len(equivalenceFilter[entry]))
+                #print("    has more than 1 entry: %d" % len(equivalenceFilter[entry]))
                 if len(equivalenceFilter[entry]) > maxSize:
                     maxSize = len(equivalenceFilter[entry])
                     temp = set(equivalenceFilter[entry])
-                    print("    update max size %d" % maxSize)
+                    #print("    update max size %d" % maxSize)
 
         equivalenceClass.discard(temp)
         sortedTemp = sorted(temp)
         fixedNode = sortedTemp[0]
-        print("fixed node is: %d" % fixedNode)
+        #print("fixed node is: %d" % fixedNode)
 
         if fixedNode in condition:
             condition[fixedNode].append(sortedTemp)
@@ -274,11 +274,11 @@ class Utility:
         for maps in theMappings:
             for i in range(0, len(maps)):
                 if maps[i] == fixedNode and maps[i] == mappedHNodes[i]:
-                    print("map[%d] - %d" % (i, maps[i]))
+                    #print("map[%d] - %d" % (i, maps[i]))
                     newMappings.append(maps)
-        print("find condition Recursive call")
+        #print("find condition Recursive call")
         self.findCondition(mappedHNodes, newMappings, condition, equivalenceClass)
-        print("end of find condition")
+        #print("end of find condition")
         return condition
 
     def isomorphicExtension(self, partialMap: Dict[int, int],
@@ -293,14 +293,14 @@ class Utility:
         :param symBreakCondition: set of symmetry-breaking conditions
         :return: int representing the count of all the isomorphic extensions
         """
-        print("----ISOMORPHIC EXTENSION DEBUG ------")
+        #print("----ISOMORPHIC EXTENSION DEBUG ------")
         listOfIsomorphisms = 0  #tracks number of isomorphisms
         partialMapValuesG: List[int] = []  # list
         partialMapKeysH: List[int] = []  # list
 
         '''extract list of keys and list values from paritalMap'''
         for maps in partialMap:
-            print("Keys: %d Values: %d" % (maps, partialMap[maps]))
+            #print("Keys: %d Values: %d" % (maps, partialMap[maps]))
             partialMapValuesG.append(int(partialMap[maps]))
             partialMapKeysH.append(int(maps))
 
@@ -310,27 +310,27 @@ class Utility:
         partialMapKeysH.sort()
 
         if self.equalDtoH(queryGraph.getVertexList(), partialMapKeysH):
-            print("************ EQUAL DtoH - base case - FOUND ISOMORPHISM ************")
+            #print("************ EQUAL DtoH - base case - FOUND ISOMORPHISM ************")
             return 1
 
         m: int = self.getMostConstrainedNeighbour(partialMapKeysH, queryGraph)
         if m < 0:
-            print("m less than 0 - base case")
+            #print("m less than 0 - base case")
             return 0
-        print("m is %d"%m)
+        #print("m is %d"%m)
         neighborsOfM: List[int] = queryGraph.getNeighbors(m)
         bestMappedNeighborOfM: int = 0
         for neighbor in neighborsOfM:
             #if neighbor == neighborsOfM[-1]:
             if neighbor in partialMap.keys():
-                print("best mapped neighbor of m: %d" % neighbor)
+                #print("best mapped neighbor of m: %d" % neighbor)
                 bestMappedNeighborOfM: int = neighbor
                 break
 
         possibleMappingNodes: List[int] = []
         for node in inputGraph.getNeighbors(partialMap[bestMappedNeighborOfM]):
             if node not in partialMapValuesG:
-                print("found node: %d" % node)
+                #print("found node: %d" % node)
                 possibleMappingNodes.append(int(node))
 
         partialMapKeysHSize: int = len(partialMapKeysH)
@@ -340,25 +340,25 @@ class Utility:
             if int(mapKeyOriginal[i]) in neighborsOfM:
                 for node in possibleMappingNodes:
                     if node in neighborsOfMappedGNode:
-                        print("update possible Mapping node: %d" % node)
+                        #print("update possible Mapping node: %d" % node)
                         temp.append(int(node))
                 possibleMappingNodes = temp.copy()
             else:
                 for node in possibleMappingNodes:
                     if node not in neighborsOfMappedGNode:
-                        print("update possible mapping node: %d" % node)
+                        #print("update possible mapping node: %d" % node)
                         temp.append(int(node))
                 possibleMappingNodes = temp.copy()
 
         for n in possibleMappingNodes:
-            print("possibleMappingNode is %d" % n)
+            #print("possibleMappingNode is %d" % n)
             if not self.isNeighbourIncompatible(inputGraph, n, partialMap, neighborsOfM):
-                print("neighbor: %d is incompatible" % n)
+                #print("neighbor: %d is incompatible" % n)
                 skip = False
                 for condition in symBreakCondition:
-                    print("condition is: %d" % condition)
+                    #print("condition is: %d" % condition)
                     if not self.checkSymmetryBreak(symBreakCondition[condition][0][0], symBreakCondition[condition][0], partialMap, m, n):
-                        print("symmetry break condition is FALSE: %d, %d" % (condition, n))
+                        #print("symmetry break condition is FALSE: %d, %d" % (condition, n))
                         skip = True
                         break
                 if skip:
@@ -366,9 +366,9 @@ class Utility:
                 newPartialMap = partialMap.copy()  # dict of pairs
                 newPartialMap[m] = n
 
-                print("isomorphic recursive call")
+                #print("isomorphic recursive call")
                 subList = self.isomorphicExtension(newPartialMap, queryGraph, inputGraph, symBreakCondition)
-                print("end of isomorphic recursive call")
+                #print("end of isomorphic recursive call")
                 listOfIsomorphisms += subList
 
         return listOfIsomorphisms
@@ -385,7 +385,8 @@ class Utility:
         :param mappedHNodes: List
         :return:
         """
-        print("-----Isomorphic Extension for Equivilance Class DEBUG ------")
+
+        #print("-----Isomorphic Extension for Equivilance Class DEBUG ------")
 
         result = []                 #2d list
         listOfIsomorphisms = []     #2d list
@@ -394,7 +395,7 @@ class Utility:
 
         '''extract list of keys and list of values from partialMap'''
         for maps in partialMap:
-            print("Map key - %d Map value - %d" % (maps, partialMap[maps]))
+            #print("Map key - %d Map value - %d" % (maps, partialMap[maps]))
             partialMapValuesG.append(int(partialMap[maps]))
             partialMapKeysH.append(maps)
 
@@ -405,13 +406,13 @@ class Utility:
         partialMapKeysH.sort()
 
         if self.equalDtoH(queryGraph.getVertexList(), partialMapKeysH) == True:
-            print("D to H is true")
+            #print("D to H is true")
             mappedHNodes[:] = list(mapKeyOriginal)
             result.append(mapValueOriginal)
             return result
 
         m = int(self.getMostConstrainedNeighbour(partialMapKeysH, queryGraph))
-        print("Most constrained neighbor is: %d" % m)
+        #print("Most constrained neighbor is: %d" % m)
         if m < 0:
             return listOfIsomorphisms
         
@@ -421,13 +422,13 @@ class Utility:
         neighborsOfM = queryGraph.getNeighbors(m)
 
         for n in neighbourRange:
-            print("neighborRange: %d" % n)
+            #print("neighborRange: %d" % n)
             if not self.isNeighbourIncompatible(inputGraph, n, partialMap, neighborsOfM):
-                print("    neighbor is compatible")
+                #print("    neighbor is compatible")
                 newPartialMap = partialMap.copy()
-                print("    %d - %d" % (m, n))
+                #print("    %d - %d" % (m, n))
                 newPartialMap[m] = int(n)
-                print("recursive call - isomorphic extension for equivalence")
+                #print("recursive call - isomorphic extension for equivalence")
                 subList = self.isomorphicExtensionForEquivalenceClass(newPartialMap, queryGraph, inputGraph, mappedHNodes)
                 for item in subList:
                     listOfIsomorphisms.append(item)
@@ -442,24 +443,21 @@ class Utility:
         :param fixedNode: the node we choose to be fixed as the anchor for symmetry
         :return: a set of symmetry-breaking conditions for each represented node from each equivalance class
         """
-        print("-----Alg2_modifiedforequivlanceclass DEBUG-----")
+        #print("-----Alg2_modifiedforequivlanceclass DEBUG-----")
         vertexList = queryGraph.getVertexList()
         h = next(iter(vertexList))
 
-        print("h for inputDegSeq is: %d" % h)
-        print(queryGraph.getOutDegree(h))
+        #print("h for inputDegSeq is: %d" % h)
+        #print(queryGraph.getOutDegree(h))
 
         inputGraphDegSeq = inputGraph.getNodesSortedByDegree(queryGraph.getOutDegree(h))
         theMappings = []        #2d list
         mappedHNodes = []       #list
 
         i = 0
-        print("inputGraphDegSeq items:")
-        for item in inputGraphDegSeq:
-            print(item)
 
         for item in inputGraphDegSeq:
-            print("\nh is %d. Element %d of inputGraphDegSeq %d" % (h, i, item))
+            #print("\nh is %d. Element %d of inputGraphDegSeq %d" % (h, i, item))
             i+=1
             f = {}  # dictionary of pairs
             f[h] = int(item)
@@ -490,24 +488,24 @@ class Utility:
         :return: The count of all of possible mappings of the query graph to the target graph
         """
 
-        print("############ DEBUG CONDITION ######################")
+        #print("############ DEBUG CONDITION ######################")
         condition = self.algorithm2_modified_for_equivalance_class(queryGraph, queryGraph, h)
-        print("############ FINISH FINDING CONDITION ######################")
+        #print("############ FINISH FINDING CONDITION ######################")
 
-        print("\nSize condition: %d" % len(condition))
+        #print("\nSize condition: %d" % len(condition))
         for con in condition:
             print(str(con) + " => " + str(condition[con][0]), end='')
             print("")
 
         inputGraphDegSeq = inputGraph.getNodesSortedByDegree(queryGraph.getOutDegree(h))
-        print("h neighbor size: %d" % len(queryGraph.getNeighbors(h)))
+        #print("h neighbor size: %d" % len(queryGraph.getNeighbors(h)))
 
         mappingCount = 0
-        print("----- ALG2_Modified DEBUG -----")
+        #print("----- ALG2_Modified DEBUG -----")
         f: Dict[int, int] = {}
         i = 0
         for value in inputGraphDegSeq:
-            print("\nh is: %d. Element %d of inputGraphDegSeq[i] = %d" % (h, i, value))
+            #print("\nh is: %d. Element %d of inputGraphDegSeq[i] = %d" % (h, i, value))
             i+=1
 
             f[h] = value
