@@ -4,8 +4,8 @@ class Graph:
 
     Attributes
     ----------
-    edgeList: contains all unique edges in the graph
-    vertexList: contains all unique vertex in the graph
+    edgeList:List[List[int]] contains all unique edges in the graph
+    vertexList:Dict[int, List[int] contains all unique vertex in the graph
 
     Methods
     -------
