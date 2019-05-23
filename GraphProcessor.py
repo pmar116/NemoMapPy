@@ -13,11 +13,11 @@ class GraphProcessor:
         """
     def __init__(self):
         pass
-    def loadGraph(self, fileName: str) -> Graph:
+    def loadGraph(self, fileName):
         """
         loadGraph: reads edges from a text file and stores the values in a 2D list
-        :param fileName: The name f the file containing the graph edges
-        :return: A graph containing the edges from the file
+        :param fileName:string The name f the file containing the graph edges
+        :return: Graph - A graph containing the edges from the file
         """
         edgeList = []
         with open(fileName) as myFile:

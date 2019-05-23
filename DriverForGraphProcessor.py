@@ -6,10 +6,6 @@ from Utility import Utility
 inputName = input("Input Graph: ")
 queryName = input("Query Graph: ")
 
-'''Testing input'''
-#inputName = "exampleGraph.txt"
-#queryName = "queryGraph.txt"
-
 goodInput = True
 try:
     open(inputName, "r")
